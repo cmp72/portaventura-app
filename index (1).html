@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>App PortAventura — Prototipo v4</title>
+<style>
+  :root {
+    --color-background-primary: #ffffff;
+    --color-background-secondary: #F5F4EF;
+    --color-background-tertiary: #EFEDE7;
+    --color-background-warning: #FAEEDA;
+    --color-text-primary: #1C1C1A;
+    --color-text-secondary: #5F5E5A;
+    --color-text-tertiary: #888780;
+    --color-text-warning: #854F0B;
+    --color-border-tertiary: rgba(0,0,0,0.15);
+    --color-border-secondary: rgba(0,0,0,0.3);
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --color-background-primary: #1C1C1A;
+      --color-background-secondary: #2C2C2A;
+      --color-background-tertiary: #1C1C1A;
+      --color-background-warning: #412402;
+      --color-text-primary: #F1EFE8;
+      --color-text-secondary: #B4B2A9;
+      --color-text-tertiary: #888780;
+      --color-text-warning: #FAC775;
+      --color-border-tertiary: rgba(255,255,255,0.15);
+      --color-border-secondary: rgba(255,255,255,0.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-background-tertiary);
+    color: var(--color-text-primary);
+    margin: 0;
+    padding: 1rem;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .app-container { max-width: 680px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 500; margin: 0 0 0.25rem; }
+  .subtitle { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+  input[type="date"], input[type="number"], select, button {
+    font-family: inherit; font-size: 14px; padding: 8px 12px;
+    border: 0.5px solid var(--color-border-secondary);
+    border-radius: var(--border-radius-md);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary); height: 36px;
+  }
+  button { cursor: pointer; transition: background 0.15s; }
+  button:hover { background: var(--color-background-secondary); }
+  button:active { transform: scale(0.98); }
+  .park-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .park-row:last-child { border-bottom: none; }
+  .park-name { font-size: 14px; }
+  .park-meta { font-size: 13px; color: var(--color-text-secondary); text-align: right; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; vertical-align: middle; }
+  .dot-open { background: #639922; }
+  .dot-closed { background: #888780; }
+  .badge { display: inline-block; padding: 6px 14px; border-radius: var(--border-radius-md); font-size: 15px; font-weight: 500; }
+  .ride-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px; }
+  .ride-row:last-child { border-bottom: none; }
+  .wait-pill { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: var(--border-radius-md); min-width: 56px; text-align: center; }
+  .wait-low { background: #C0DD97; color: #27500A; }
+  .wait-med { background: #FAC775; color: #633806; }
+  .wait-high { background: #F7C1C1; color: #791F1F; }
+  .wait-closed { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  .section-label { font-size: 13px; color: var(--color-text-secondary); padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .live-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .live-park-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+  .live-park-tag { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; }
+  .alert-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
+  .alert-row:last-child { border-bottom: none; }
+  .alert-fired { background: #EAF3DE; border-radius: var(--border-radius-md); padding: 10px 12px; margin: 4px -8px; border-bottom: none; }
+  .x-btn { padding: 2px 8px; font-size: 16px; min-width: 28px; height: auto; }
+  .date-warning { font-size: 12px; color: var(--color-text-warning); margin-top: 6px; min-height: 16px; }
+  .card { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 0.25rem 1rem; margin-bottom: 1rem; }
+  .card-flat { background: var(--color-background-secondary); border-radius: var(--border-radius-lg); padding: 1.25rem; margin-bottom: 1rem; }
+  .card-padded { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .footer { text-align: center; font-size: 11px; color: var(--color-text-tertiary); margin-top: 1rem; padding-bottom: 1rem; }
+  .footer a { color: var(--color-text-secondary); }
+</style>
+</head>
+<body>
+<div class="app-container">
+
+<h1>App PortAventura</h1>
+<div class="subtitle">Prototipo v4 — datos en vivo separados por parque</div>
+
+<div style="margin-bottom: 1.25rem;">
+  <label style="display: block; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px;">Fecha de la visita</label>
+  <input type="date" id="date-input" style="width: 100%; max-width: 240px;" />
+  <div class="date-warning" id="date-warning"></div>
+</div>
+
+<div class="card-flat">
+  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px;">Afluencia estimada</div>
+  <div id="affluence-badge" class="badge">—</div>
+  <div id="affluence-reason" style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; margin-top: 10px;"></div>
+</div>
+
+<div class="card">
+  <div class="section-label">Estado y horarios</div>
+  <div id="parks-status"></div>
+</div>
+
+<div id="live-card-pa" class="card-flat" style="display: none;">
+  <div class="live-header">
+    <div class="live-park-name">PortAventura Park</div>
+    <div class="live-park-tag">Ahora mismo</div>
+  </div>
+  <div id="live-summary-pa" style="font-size: 14px; margin-bottom: 14px;">Consultando tiempos...</div>
+  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px;">Atracciones estrella</div>
+  <div id="popular-rides-pa"></div>
+</div>
+
+<div id="live-card-ferrari" class="card-flat" style="display: none;">
+  <div class="live-header">
+    <div class="live-park-name">Ferrari Land</div>
+    <div class="live-park-tag">Ahora mismo</div>
+  </div>
+  <div id="live-summary-ferrari" style="font-size: 14px; margin-bottom: 14px;">Consultando tiempos...</div>
+  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 6px;">Atracciones estrella</div>
+  <div id="popular-rides-ferrari"></div>
+</div>
+
+<div id="alert-card" class="card-padded" style="display: none;">
+  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px;">Alertas de cola</div>
+  <div style="display: flex; gap: 8px; align-items: flex-end; margin-bottom: 12px; flex-wrap: wrap;">
+    <div style="flex: 2; min-width: 140px;">
+      <label style="display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">Atracción</label>
+      <select id="alert-ride" style="width: 100%;"></select>
+    </div>
+    <div style="flex: 1; min-width: 80px;">
+      <label style="display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">Máx. min</label>
+      <input type="number" id="alert-threshold" min="5" max="120" value="20" step="5" style="width: 100%;" />
+    </div>
+    <button id="alert-add-btn" style="padding: 8px 14px;">Añadir</button>
+  </div>
+  <div id="alerts-list"></div>
+  <div id="alert-last-check" style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 10px; text-align: right;"></div>
+</div>
+
+<div class="footer">
+  Tiempos reales vía <a href="https://queue-times.com" target="_blank">Powered by Queue-Times.com</a> · Calendario temporada 2026 · Datos refrescados cada 3 min
+</div>
+
+</div>
+
+<script>
+(function(){
+  const dateInput = document.getElementById('date-input');
+  const dateWarning = document.getElementById('date-warning');
+  const todayIso = new Date().toISOString().slice(0,10);
+  const SEASON_END = '2027-01-06';
+  dateInput.value = todayIso;
+  dateInput.min = todayIso;
+  dateInput.max = SEASON_END;
+
+  // Config por parque: id Queue-Times + atracciones estrella
+  const PARKS = {
+    pa: {
+      id: 19,
+      label: 'PortAventura',
+      popular: [
+        {keyword: 'furius', name: 'Furius Baco'},
+        {keyword: 'shambhala', name: 'Shambhala'},
+        {keyword: 'dragon khan', name: 'Dragon Khan'},
+        {keyword: 'uncharted', name: 'Uncharted'},
+        {keyword: 'street mission', name: 'Street Mission'},
+        {keyword: 'stampida', name: 'Stampida'},
+        {keyword: 'tutuki', name: 'Tutuki Splash'},
+        {keyword: 'hurakan', name: 'Hurakan Condor'}
+      ]
+    },
+    ferrari: {
+      id: 277,
+      label: 'Ferrari Land',
+      popular: [
+        {keyword: 'red force', name: 'Red Force'},
+        {keyword: 'thrill towers', name: 'Thrill Towers'},
+        {keyword: 'maranello', name: 'Maranello Grand Race'},
+        {keyword: 'racing legends', name: 'Racing Legends'},
+        {keyword: 'junior', name: 'Junior Championship'},
+        {keyword: 'flying dreams', name: 'Flying Dreams'}
+      ]
+    }
+  };
+
+  let currentRides = { pa: [], ferrari: [] };
+  let alerts = [];
+  let pollTimer = null;
+
+  // Selector de alertas agrupado por parque
+  const sel = document.getElementById('alert-ride');
+  Object.entries(PARKS).forEach(([parkKey, cfg]) => {
+    const group = document.createElement('optgroup');
+    group.label = cfg.label;
+    cfg.popular.forEach(p => {
+      const opt = document.createElement('option');
+      // value compuesto para saber de qué parque traer los datos
+      opt.value = parkKey + '|' + p.keyword;
+      opt.textContent = p.name;
+      group.appendChild(opt);
+    });
+    sel.appendChild(group);
+  });
+
+  function between(mmdd, from, to) { return mmdd >= from && mmdd <= to; }
+  function isPaClosed(mmdd) { return mmdd >= '01-07' && mmdd < '02-14'; }
+  function isFerrariSeason(mmdd) { return between(mmdd, '03-26', '11-06'); }
+
+  function validateDate() {
+    let val = dateInput.value;
+    dateWarning.textContent = '';
+    if (!val || !/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      dateInput.value = todayIso;
+      dateWarning.textContent = 'Fecha no válida, ajustada a hoy.';
+      return false;
+    }
+    const parts = val.split('-');
+    const y = parseInt(parts[0], 10);
+    const m = parseInt(parts[1], 10);
+    const d = parseInt(parts[2], 10);
+    if (y < 2026 || y > 2027 || m < 1 || m > 12 || d < 1 || d > 31) {
+      dateInput.value = todayIso;
+      dateWarning.textContent = 'Fecha fuera de temporada, ajustada a hoy.';
+      return false;
+    }
+    const test = new Date(val + 'T12:00:00');
+    if (isNaN(test.getTime()) || test.getUTCFullYear() !== y || (test.getUTCMonth() + 1) !== m || test.getUTCDate() !== d) {
+      dateInput.value = todayIso;
+      dateWarning.textContent = 'Día inexistente, ajustada a hoy.';
+      return false;
+    }
+    if (val < todayIso) {
+      dateInput.value = todayIso;
+      dateWarning.textContent = 'No se muestran fechas pasadas.';
+      return false;
+    }
+    if (val > SEASON_END) {
+      dateInput.value = SEASON_END;
+      dateWarning.textContent = 'La temporada 2026 acaba el 6 de enero de 2027.';
+      return false;
+    }
+    return true;
+  }
+
+  function getAffluence(date) {
+    const mmdd = date.toISOString().slice(5,10);
+    if (isPaClosed(mmdd)) {
+      return {level: 'closed', label: 'Parque cerrado', reason: 'PortAventura cierra del 7 de enero al 13 de febrero para mantenimiento anual.'};
+    }
+    let score = 0;
+    const reasons = [];
+    const day = date.getDay();
+    const month = date.getMonth() + 1;
+    if (day === 6) { score += 3; reasons.push('sábado'); }
+    else if (day === 0) { score += 2; reasons.push('domingo'); }
+    else if (day === 5) { score += 1; reasons.push('viernes'); }
+    if (month === 7 || month === 8) { score += 3; reasons.push('pleno verano'); }
+    else if (month === 6 || month === 9) { score += 1; }
+    else if (month === 2 || month === 11) { score -= 1; }
+    if (between(mmdd, '03-28', '04-06')) { score += 2; reasons.push('Semana Santa'); }
+    else if (between(mmdd, '09-26', '11-02') && (day === 0 || day === 5 || day === 6)) { score += 2; reasons.push('Halloween'); }
+    else if (between(mmdd, '02-28', '03-22') && (day === 0 || day === 6)) { score += 1; reasons.push('Carnaval'); }
+    else if (between(mmdd, '12-05', '12-08')) { score += 2; reasons.push('puente de diciembre'); }
+    else if (mmdd >= '12-22' || mmdd <= '01-06') { score += 2; reasons.push('Navidad'); }
+    if (mmdd === '04-23') reasons.push('Sant Jordi');
+    const hasEvent = reasons.some(r => !['viernes','sábado','domingo'].includes(r));
+    if (day >= 1 && day <= 4 && !hasEvent && (month <= 5 || month >= 10)) score -= 1;
+    let level, label;
+    if (score >= 5) { level = 'high'; label = 'Alta'; }
+    else if (score >= 2) { level = 'medium'; label = 'Media'; }
+    else { level = 'low'; label = 'Baja'; }
+    return {
+      level, label,
+      reason: reasons.length ? 'Factores: ' + reasons.join(', ') + '.' : 'Día de diario en temporada tranquila.'
+    };
+  }
+
+  function getHours(date) {
+    const mmdd = date.toISOString().slice(5,10);
+    const day = date.getDay();
+    const weekend = day === 0 || day === 6;
+    if (isPaClosed(mmdd)) return {pa: null, ferrari: null, caribe: null};
+    let pa;
+    if (between(mmdd, '06-27', '09-06')) pa = weekend ? '10:30 - 00:00' : '10:30 - 22:30';
+    else if (between(mmdd, '09-26', '11-02')) pa = weekend ? '10:30 - 22:00' : '10:30 - 20:00';
+    else if (mmdd >= '12-05' || mmdd <= '01-06') pa = '10:30 - 20:00';
+    else if (between(mmdd, '02-14', '03-25')) pa = weekend ? '10:30 - 19:00' : '10:30 - 18:00';
+    else pa = weekend ? '10:30 - 20:00' : '10:30 - 19:00';
+    let ferrari = null;
+    if (isFerrariSeason(mmdd)) {
+      ferrari = between(mmdd, '06-27', '09-06') ? '11:00 - 21:00' : (weekend ? '11:00 - 19:00' : '11:00 - 18:00');
+    }
+    let caribe = null;
+    if (between(mmdd, '05-23', '09-20')) caribe = '11:00 - 19:00';
+    return {pa, ferrari, caribe};
+  }
+
+  function waitClass(w) {
+    if (w <= 15) return 'wait-low';
+    if (w <= 35) return 'wait-med';
+    return 'wait-high';
+  }
+
+  function findRide(parkKey, keyword) {
+    return (currentRides[parkKey] || []).find(r => (r.name || '').toLowerCase().includes(keyword));
+  }
+
+  function renderAlerts() {
+    const list = document.getElementById('alerts-list');
+    if (alerts.length === 0) {
+      list.innerHTML = '<div style="font-size: 13px; color: var(--color-text-tertiary); padding: 8px 0;">Aún no has creado ninguna alerta.</div>';
+      return;
+    }
+    list.innerHTML = alerts.map(a => {
+      const ride = findRide(a.parkKey, a.keyword);
+      let statusHtml, fired = false;
+      if (!ride) {
+        statusHtml = '<span style="color: var(--color-text-tertiary); font-size: 13px;">Sin datos</span>';
+      } else if (!ride.is_open) {
+        statusHtml = '<span style="color: var(--color-text-secondary); font-size: 13px;">Cerrada</span>';
+      } else {
+        const w = ride.wait_time || 0;
+        if (w <= a.threshold) {
+          fired = true;
+          statusHtml = '<span style="color: #27500A; font-weight: 500; font-size: 14px;">¡' + w + ' min ahora!</span>';
+        } else {
+          statusHtml = '<span style="color: var(--color-text-secondary); font-size: 13px;">' + w + ' min</span>';
+        }
+      }
+      const parkLabel = PARKS[a.parkKey] ? PARKS[a.parkKey].label : '';
+      return '<div class="alert-row ' + (fired ? 'alert-fired' : '') + '">' +
+        '<div><div style="font-size: 14px;">' + a.name + '</div>' +
+        '<div style="font-size: 12px; color: var(--color-text-secondary);">' + parkLabel + ' · avisar cuando ≤ ' + a.threshold + ' min</div></div>' +
+        '<div style="display: flex; gap: 10px; align-items: center;">' + statusHtml +
+        '<button class="x-btn" data-alert-id="' + a.id + '">×</button></div></div>';
+    }).join('');
+    list.querySelectorAll('[data-alert-id]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = parseInt(btn.dataset.alertId, 10);
+        alerts = alerts.filter(a => a.id !== id);
+        renderAlerts();
+      });
+    });
+  }
+
+  function addAlert() {
+    const val = sel.value;
+    if (!val || !val.includes('|')) return;
+    const parts = val.split('|');
+    const parkKey = parts[0];
+    const keyword = parts[1];
+    const cfg = PARKS[parkKey];
+    if (!cfg) return;
+    const option = cfg.popular.find(p => p.keyword === keyword);
+    const threshold = parseInt(document.getElementById('alert-threshold').value, 10) || 20;
+    if (!option) return;
+    // Si ya existía la misma atracción del mismo parque, la sustituimos
+    alerts = alerts.filter(a => !(a.parkKey === parkKey && a.keyword === keyword));
+    alerts.push({id: Date.now(), parkKey: parkKey, keyword: keyword, name: option.name, threshold: threshold});
+    renderAlerts();
+  }
+
+  function renderLivePark(parkKey) {
+    const cfg = PARKS[parkKey];
+    const summaryEl = document.getElementById('live-summary-' + parkKey);
+    const listEl = document.getElementById('popular-rides-' + parkKey);
+    const rides = currentRides[parkKey] || [];
+    const openRides = rides.filter(r => r.is_open);
+
+    if (rides.length === 0) {
+      summaryEl.textContent = 'No se han podido cargar los datos en vivo.';
+      listEl.innerHTML = '';
+      return;
+    }
+    if (openRides.length === 0) {
+      summaryEl.textContent = 'Sin atracciones abiertas ahora mismo.';
+    } else {
+      const avg = openRides.reduce((s, r) => s + (r.wait_time || 0), 0) / openRides.length;
+      const max = Math.max.apply(null, openRides.map(function(r) { return r.wait_time || 0; }));
+      let nivel, color;
+      if (avg >= 30) { nivel = 'Alta'; color = '#791F1F'; }
+      else if (avg >= 15) { nivel = 'Media'; color = '#633806'; }
+      else { nivel = 'Baja'; color = '#27500A'; }
+      summaryEl.innerHTML = '<div style="font-size: 20px; font-weight: 500; color: ' + color + ';">' + nivel + '</div>' +
+        '<div style="color: var(--color-text-secondary); font-size: 13px;">Espera media: ' + Math.round(avg) + ' min · Máx: ' + max + ' min · ' + openRides.length + ' abiertas</div>';
+    }
+
+    const starRides = cfg.popular.map(function(p) { return findRide(parkKey, p.keyword); }).filter(Boolean);
+    if (starRides.length === 0) {
+      listEl.innerHTML = '<div style="font-size: 13px; color: var(--color-text-secondary); padding: 8px 0;">Atracciones estrella no reportadas ahora mismo.</div>';
+    } else {
+      listEl.innerHTML = starRides.map(function(r) {
+        const cls = r.is_open ? waitClass(r.wait_time || 0) : 'wait-closed';
+        const val = r.is_open ? (r.wait_time || 0) + ' min' : 'Cerrada';
+        return '<div class="ride-row"><div>' + r.name + '</div><div class="wait-pill ' + cls + '">' + val + '</div></div>';
+      }).join('');
+    }
+  }
+
+  async function fetchPark(parkKey) {
+    const cfg = PARKS[parkKey];
+    try {
+      const res = await fetch('https://queue-times.com/parks/' + cfg.id + '/queue_times.json');
+      const data = await res.json();
+      const rides = [];
+      (data.lands || []).forEach(function(l) { (l.rides || []).forEach(function(r) { rides.push(r); }); });
+      (data.rides || []).forEach(function(r) { rides.push(r); });
+      currentRides[parkKey] = rides;
+    } catch (e) {
+      currentRides[parkKey] = [];
+    }
+  }
+
+  async function fetchLive() {
+    const date = new Date(dateInput.value + 'T12:00:00');
+    const mmdd = date.toISOString().slice(5,10);
+    const tasks = [];
+    const doPa = !isPaClosed(mmdd);
+    const doFerrari = isFerrariSeason(mmdd);
+    if (doPa) tasks.push(fetchPark('pa'));
+    if (doFerrari) tasks.push(fetchPark('ferrari'));
+    await Promise.all(tasks);
+
+    if (doPa) renderLivePark('pa');
+    if (doFerrari) renderLivePark('ferrari');
+
+    document.getElementById('alert-last-check').textContent = 'Última actualización: ' + new Date().toLocaleTimeString('es-ES', {hour: '2-digit', minute: '2-digit'});
+    renderAlerts();
+  }
+
+  function startPolling() {
+    if (pollTimer) clearInterval(pollTimer);
+    pollTimer = setInterval(fetchLive, 180000);
+  }
+
+  function stopPolling() {
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+  }
+
+  function render() {
+    validateDate();
+    const date = new Date(dateInput.value + 'T12:00:00');
+    const mmdd = date.toISOString().slice(5,10);
+    const est = getAffluence(date);
+    const hours = getHours(date);
+    const badge = document.getElementById('affluence-badge');
+    const reasonEl = document.getElementById('affluence-reason');
+    badge.textContent = est.label;
+    badge.style.border = 'none';
+    if (est.level === 'high') { badge.style.background = '#F7C1C1'; badge.style.color = '#791F1F'; }
+    else if (est.level === 'medium') { badge.style.background = '#FAC775'; badge.style.color = '#633806'; }
+    else if (est.level === 'low') { badge.style.background = '#C0DD97'; badge.style.color = '#27500A'; }
+    else {
+      badge.style.background = 'var(--color-background-primary)';
+      badge.style.color = 'var(--color-text-secondary)';
+      badge.style.border = '0.5px solid var(--color-border-tertiary)';
+    }
+    reasonEl.textContent = est.reason;
+    const parks = [
+      {name: 'PortAventura Park', hours: hours.pa},
+      {name: 'Ferrari Land', hours: hours.ferrari},
+      {name: 'Costa Caribe Aquatic Park', hours: hours.caribe}
+    ];
+    document.getElementById('parks-status').innerHTML = parks.map(function(p) {
+      return '<div class="park-row"><div class="park-name">' + p.name + '</div>' +
+        '<div class="park-meta"><span class="dot ' + (p.hours ? 'dot-open' : 'dot-closed') + '"></span>' + (p.hours || 'Cerrado') + '</div></div>';
+    }).join('');
+
+    const livePa = document.getElementById('live-card-pa');
+    const liveFerrari = document.getElementById('live-card-ferrari');
+    const alertCard = document.getElementById('alert-card');
+    const isToday = dateInput.value === todayIso;
+    const paOpenToday = !isPaClosed(mmdd);
+    const ferrariOpenToday = isFerrariSeason(mmdd);
+
+    if (isToday && (paOpenToday || ferrariOpenToday)) {
+      livePa.style.display = paOpenToday ? 'block' : 'none';
+      liveFerrari.style.display = ferrariOpenToday ? 'block' : 'none';
+      alertCard.style.display = 'block';
+      fetchLive();
+      startPolling();
+    } else {
+      livePa.style.display = 'none';
+      liveFerrari.style.display = 'none';
+      alertCard.style.display = 'none';
+      stopPolling();
+    }
+  }
+
+  dateInput.addEventListener('change', render);
+  dateInput.addEventListener('blur', render);
+  document.getElementById('alert-add-btn').addEventListener('click', addAlert);
+  render();
+})();
+</script>
+</body>
+</html>
