@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>App PortAventura — Prototipo v22</title>
+<title>App PortAventura — Prototipo v23</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1D3557">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="PortAventura">
 <style>
@@ -43,22 +43,11 @@
     }
   }
   * { box-sizing: border-box; }
-  body {
-    font-family: var(--font-sans);
-    background: var(--color-background-tertiary);
-    color: var(--color-text-primary);
-    margin: 0; padding: 1rem; font-size: 16px; line-height: 1.6;
-  }
+  body { font-family: var(--font-sans); background: var(--color-background-tertiary); color: var(--color-text-primary); margin: 0; padding: 1rem; font-size: 16px; line-height: 1.6; }
   .app-container { max-width: 680px; margin: 0 auto; }
   h1 { font-size: 22px; font-weight: 500; margin: 0 0 0.25rem; }
   .subtitle { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
-  input[type="date"], input[type="number"], select, button {
-    font-family: inherit; font-size: 14px; padding: 8px 12px;
-    border: 0.5px solid var(--color-border-secondary);
-    border-radius: var(--border-radius-md);
-    background: var(--color-background-primary);
-    color: var(--color-text-primary); height: 36px;
-  }
+  input[type="date"], input[type="number"], select, button { font-family: inherit; font-size: 14px; padding: 8px 12px; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); background: var(--color-background-primary); color: var(--color-text-primary); height: 36px; }
   button { cursor: pointer; transition: background 0.15s; }
   button:hover { background: var(--color-background-secondary); }
   button:active { transform: scale(0.98); }
@@ -78,48 +67,44 @@
   .footer { text-align: center; font-size: 11px; color: var(--color-text-tertiary); margin-top: 1rem; padding-bottom: 1rem; }
   .footer a { color: var(--color-text-secondary); }
 
-  /* === TABS === */
-  .tabs-bar {
-    display: flex; background: var(--color-background-primary);
-    border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary);
-    padding: 4px; gap: 4px; margin-bottom: 1rem;
-  }
-  .tab-btn {
-    flex: 1; height: 36px; border: none; background: transparent;
-    font-size: 14px; border-radius: var(--border-radius-md);
-    color: var(--color-text-secondary); font-weight: 400;
-  }
-  .tab-btn.active {
-    background: var(--color-accent); color: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-  }
+  /* TABS */
+  .tabs-bar { display: flex; background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 4px; gap: 4px; margin-bottom: 1rem; }
+  .tab-btn { flex: 1; height: 36px; border: none; background: transparent; font-size: 14px; border-radius: var(--border-radius-md); color: var(--color-text-secondary); font-weight: 400; }
+  .tab-btn.active { background: var(--color-accent); color: white; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
   .tab-btn.active:hover { background: var(--color-accent); opacity: 0.95; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* === ATRACCIONES === */
-  .ride-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px; }
+  /* ATRACCIONES */
+  .ride-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px; gap: 10px; }
   .ride-row:last-child { border-bottom: none; }
-  .ride-row.ride-disabled .ride-name { color: var(--color-text-tertiary); }
-  .wait-pill { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: var(--border-radius-md); min-width: 56px; text-align: center; }
+  .ride-left { flex: 1; min-width: 0; }
+  .ride-name { font-size: 14px; font-weight: 500; line-height: 1.3; }
+  .ride-name.top::after { content: ' ★'; color: #E6A91C; font-size: 12px; }
+  .ride-zone { font-size: 11px; color: var(--color-text-tertiary); margin-top: 1px; }
+  .ride-desc { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; line-height: 1.4; display: none; }
+  .ride-row.open .ride-desc { display: block; }
+  .ride-right { flex-shrink: 0; text-align: right; }
+  .wait-pill { font-size: 13px; font-weight: 500; padding: 3px 10px; border-radius: var(--border-radius-md); min-width: 56px; text-align: center; display: inline-block; }
   .wait-low { background: #C0DD97; color: #27500A; }
   .wait-med { background: #FAC775; color: #633806; }
   .wait-high { background: #F7C1C1; color: #791F1F; }
   .wait-closed { background: var(--color-background-secondary); color: var(--color-text-tertiary); }
-  .mode-toggle { display: flex; background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 3px; margin-bottom: 12px; gap: 3px; }
-  .mode-toggle button { flex: 1; height: 32px; padding: 4px 10px; background: transparent; border: none; font-size: 13px; border-radius: 6px; color: var(--color-text-secondary); }
-  .mode-toggle button.active { background: var(--color-background-primary); color: var(--color-text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
-  .now-park-header { display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; padding: 14px 0 6px; border-top: 0.5px solid var(--color-border-tertiary); }
-  .now-park-header:first-child { border-top: none; padding-top: 4px; }
-  .edit-link { background: transparent; border: none; padding: 4px 8px; font-size: 12px; color: var(--color-accent); cursor: pointer; text-transform: none; letter-spacing: normal; height: auto; }
-  .empty-state { font-size: 13px; color: var(--color-text-secondary); padding: 14px 0; text-align: center; line-height: 1.5; }
-  .empty-state button { margin-top: 10px; background: var(--color-accent); color: white; border: none; padding: 8px 16px; font-size: 13px; }
+  .trend { font-size: 12px; font-weight: 600; margin-left: 4px; }
+  .park-section-header { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; padding: 12px 0 6px; border-bottom: 0.5px solid var(--color-border-tertiary); margin-top: 4px; }
+  .park-section-header:first-child { margin-top: 0; }
+  .live-badge { display: inline-block; font-size: 10px; background: #C0DD97; color: #27500A; padding: 1px 6px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+  .refresh-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .refresh-btn { font-size: 12px; padding: 4px 10px; height: auto; color: var(--color-accent); background: transparent; border: 0.5px solid var(--color-accent); }
+  .last-check { font-size: 11px; color: var(--color-text-tertiary); }
+
+  /* ALERTAS */
   .alert-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); }
   .alert-row:last-child { border-bottom: none; }
   .alert-fired { background: #EAF3DE; border-radius: var(--border-radius-md); padding: 10px 12px; margin: 4px -8px; border-bottom: none; }
   .x-btn { padding: 2px 8px; font-size: 16px; min-width: 28px; height: auto; }
 
-  /* === SHOWS === */
+  /* SHOWS */
   .show-disclaimer { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 12px; line-height: 1.4; }
   .show-row { display: flex; align-items: flex-start; justify-content: space-between; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); gap: 10px; }
   .show-row:last-child { border-bottom: none; }
@@ -131,7 +116,7 @@
   .show-time-pill { display: inline-block; font-size: 12px; font-weight: 500; background: var(--color-background-secondary); color: var(--color-text-secondary); padding: 2px 8px; border-radius: 20px; margin: 2px 0 2px 3px; white-space: nowrap; }
   .show-unavailable { font-size: 12px; color: var(--color-text-tertiary); font-style: italic; }
 
-  /* === RESTAURANTES === */
+  /* RESTAURANTES */
   .rest-disclaimer { font-size: 11px; color: var(--color-text-tertiary); margin-bottom: 12px; line-height: 1.4; }
   .rest-row { border-bottom: 0.5px solid var(--color-border-tertiary); }
   .rest-row:last-child { border-bottom: none; }
@@ -150,11 +135,16 @@
   .rest-park-header:first-child { padding-top: 2px; }
   .rest-closed-section { margin-top: 10px; padding-top: 10px; border-top: 0.5px solid var(--color-border-tertiary); }
 
-  /* === COMPARADOR === */
+  /* COMPARADOR */
   .cmp-card { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .cmp-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
   .cmp-title { font-size: 16px; font-weight: 500; }
+  .cmp-chevron { font-size: 11px; color: var(--color-text-tertiary); transition: transform 0.2s; }
+  .cmp-card.open .cmp-chevron { transform: rotate(180deg); }
+  .cmp-body { display: none; margin-top: 12px; }
+  .cmp-card.open .cmp-body { display: block; }
   .cmp-subtitle { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 14px; }
-  .cmp-inputs { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 14px; }
+  .cmp-inputs { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
   .cmp-inputs label { font-size: 12px; color: var(--color-text-secondary); display: block; margin-bottom: 4px; }
   .cmp-inputs input { width: 100%; }
   .cmp-col { flex: 1; min-width: 130px; }
@@ -165,13 +155,9 @@
   .cmp-box-badge { display: inline-block; padding: 3px 10px; border-radius: var(--border-radius-md); font-size: 13px; font-weight: 500; margin-bottom: 8px; }
   .cmp-box-detail { font-size: 12px; color: var(--color-text-secondary); line-height: 1.6; }
   .cmp-winner-label { font-size: 11px; font-weight: 600; color: #27500A; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-  .cmp-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
-  .cmp-chevron { font-size: 11px; color: var(--color-text-tertiary); transition: transform 0.2s; }
-  .cmp-card.open .cmp-chevron { transform: rotate(180deg); }
-  .cmp-body { display: none; margin-top: 12px; }
-  .cmp-card.open .cmp-body { display: block; }
   .cmp-clear { background: transparent; border: none; font-size: 12px; color: var(--color-text-tertiary); padding: 2px 6px; height: auto; text-decoration: underline; }
-  .cmp-clear:hover { color: var(--color-text-secondary); background: transparent; }
+
+  /* MODAL FAVORITAS */
   .edit-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1100; align-items: flex-start; justify-content: center; padding: 1rem; overflow-y: auto; }
   .edit-modal-content { background: var(--color-background-primary); border-radius: var(--border-radius-lg); padding: 1.25rem; max-width: 480px; width: 100%; margin: 1rem 0; max-height: calc(100vh - 2rem); display: flex; flex-direction: column; }
   .edit-modal-header { margin-bottom: 12px; }
@@ -182,7 +168,6 @@
   .edit-row { display: flex; align-items: center; gap: 10px; padding: 10px 4px; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 14px; }
   .edit-row:last-child { border-bottom: none; }
   .edit-row.at-limit { opacity: 0.45; }
-  .edit-row .star { color: #E6A91C; font-size: 13px; }
   .edit-check { width: 22px; height: 22px; flex-shrink: 0; border: 2px solid var(--color-border-secondary); border-radius: 5px; display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--color-background-primary); transition: background 0.1s, border-color 0.1s; user-select: none; }
   .edit-check.checked { background: var(--color-accent); border-color: var(--color-accent); }
   .edit-check.checked::after { content: '✓'; color: white; font-size: 13px; font-weight: 700; line-height: 1; }
@@ -191,39 +176,38 @@
   .edit-modal-footer { display: flex; gap: 8px; padding-top: 12px; border-top: 0.5px solid var(--color-border-tertiary); }
   .edit-modal-footer button { flex: 1; padding: 10px; }
   .btn-primary { background: var(--color-accent); color: white; border-color: var(--color-accent); }
-  .btn-primary:hover { opacity: 0.9; background: var(--color-accent); }
   .limit-warning { font-size: 12px; color: var(--color-text-warning); background: var(--color-background-warning); padding: 8px 10px; border-radius: var(--border-radius-md); margin: 6px 0; }
   .limit-warning.hidden { display: none; }
+  .mode-toggle { display: flex; background: var(--color-background-tertiary); border-radius: var(--border-radius-md); padding: 3px; margin-bottom: 12px; gap: 3px; }
+  .mode-toggle button { flex: 1; height: 32px; padding: 4px 10px; background: transparent; border: none; font-size: 13px; border-radius: 6px; color: var(--color-text-secondary); }
+  .mode-toggle button.active { background: var(--color-background-primary); color: var(--color-text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
 </style>
 </head>
 <body>
 <div class="app-container">
 
 <h1>App PortAventura</h1>
-<div class="subtitle">Prototipo v16</div>
+<div class="subtitle">Prototipo v23</div>
 
-<!-- SECCIÓN FIJA: fecha + afluencia + parques -->
-<div style="margin-bottom: 1.25rem;">
-  <label style="display: block; font-size: 13px; color: var(--color-text-secondary); margin-bottom: 8px;">Fecha de la visita</label>
-  <input type="date" id="date-input" style="width: 100%; max-width: 240px;" />
+<div style="margin-bottom:1.25rem;">
+  <label style="display:block;font-size:13px;color:var(--color-text-secondary);margin-bottom:8px;">Fecha de la visita</label>
+  <input type="date" id="date-input" style="width:100%;max-width:240px;" />
   <div class="date-warning" id="date-warning"></div>
 </div>
 
 <div class="card-flat">
-  <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px;">Afluencia estimada</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:10px;">Afluencia estimada</div>
   <div id="affluence-badge" class="badge">—</div>
-  <div id="affluence-reason" style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.5; margin-top: 10px;"></div>
+  <div id="affluence-reason" style="font-size:13px;color:var(--color-text-secondary);line-height:1.5;margin-top:10px;"></div>
 </div>
 
-<!-- PRONÓSTICO DEL TIEMPO -->
-<div id="weather-card" class="card-flat" style="margin-bottom:1rem;">
-  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:6px;">
-    <div style="font-size:13px; color:var(--color-text-secondary);">Tiempo en PortAventura</div>
-    <div style="font-size:10px; color:var(--color-text-tertiary);">Open-Meteo</div>
+<!-- TIEMPO AEMET -->
+<div id="weather-card" class="card-flat">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+    <div style="font-size:13px;color:var(--color-text-secondary);">Tiempo en Salou</div>
+    <div style="font-size:10px;color:var(--color-text-tertiary);">AEMET</div>
   </div>
-  <div id="weather-content">
-    <div style="font-size:13px;color:var(--color-text-tertiary);">Cargando previsión...</div>
-  </div>
+  <div id="weather-content" style="font-size:13px;color:var(--color-text-tertiary);">Cargando previsión...</div>
 </div>
 
 <div class="card">
@@ -231,7 +215,7 @@
   <div id="parks-status"></div>
 </div>
 
-<!-- COMPARADOR DE FECHAS (colapsable) -->
+<!-- COMPARADOR -->
 <div class="cmp-card" id="cmp-card">
   <div class="cmp-header" id="cmp-toggle">
     <div class="cmp-title">Comparar fechas</div>
@@ -243,14 +227,8 @@
   <div class="cmp-body">
     <div class="cmp-subtitle">¿Cuál de los dos días es mejor para ir?</div>
     <div class="cmp-inputs">
-      <div class="cmp-col">
-        <label>Fecha A</label>
-        <input type="date" id="cmp-date-a" />
-      </div>
-      <div class="cmp-col">
-        <label>Fecha B</label>
-        <input type="date" id="cmp-date-b" />
-      </div>
+      <div class="cmp-col"><label>Fecha A</label><input type="date" id="cmp-date-a" /></div>
+      <div class="cmp-col"><label>Fecha B</label><input type="date" id="cmp-date-b" /></div>
     </div>
     <div class="cmp-result" id="cmp-result" style="display:none;"></div>
   </div>
@@ -263,105 +241,101 @@
   <button class="tab-btn" data-tab="restaurantes">Restaurantes</button>
 </div>
 
-<!-- TAB: ATRACCIONES -->
+<!-- TAB ATRACCIONES -->
 <div id="tab-atracciones" class="tab-panel active">
-  <div id="now-live-block">
-    <!-- Se muestra solo si el parque está abierto ahora mismo -->
-    <div id="now-card" class="card-padded" style="display:none;">
-      <div style="font-size: 16px; font-weight: 500; margin-bottom: 4px;">¿Qué hago ahora?</div>
-      <div style="font-size: 12px; color: var(--color-text-secondary); margin-bottom: 12px;" id="now-card-subtitle"></div>
-      <div class="mode-toggle">
-        <button id="mode-mine" class="active">Mis atracciones</button>
-        <button id="mode-all">Todas</button>
-      </div>
-      <div id="now-list"></div>
-      <div id="now-last-check" style="font-size: 11px; color: var(--color-text-tertiary); margin-top: 10px; text-align: right;"></div>
-      <div style="text-align:right; margin-top:6px;">
-        <button id="refresh-btn" style="font-size:12px; padding:4px 10px; height:auto; color:var(--color-accent); background:transparent; border:0.5px solid var(--color-accent);">↻ Actualizar ahora</button>
-      </div>
+  <div class="card-padded">
+    <!-- Aviso estacional -->
+    <div id="season-warning" style="display:none;font-size:12px;color:var(--color-text-warning);background:var(--color-background-warning);padding:10px 12px;border-radius:var(--border-radius-md);margin-bottom:12px;line-height:1.5;"></div>
+
+    <!-- Toggle Mis / Todas -->
+    <div class="mode-toggle">
+      <button id="mode-mine" class="active">Mis atracciones</button>
+      <button id="mode-all">Todas</button>
     </div>
 
-    <!-- Alertas de cola -->
-    <div id="alert-card" class="card-padded" style="display: none;">
-      <div style="font-size: 13px; color: var(--color-text-secondary); margin-bottom: 12px;">Alertas de cola</div>
-      <div style="display: flex; gap: 8px; align-items: flex-end; margin-bottom: 12px; flex-wrap: wrap;">
-        <div style="flex: 2; min-width: 140px;">
-          <label style="display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">Atracción</label>
-          <select id="alert-ride" style="width: 100%;"></select>
+    <!-- Datos en vivo (si disponibles) -->
+    <div id="live-status" style="display:none;" class="refresh-row">
+      <span class="last-check" id="now-last-check"></span>
+      <button class="refresh-btn" id="refresh-btn">↻ Actualizar</button>
+    </div>
+
+    <!-- Lista de atracciones (siempre visible) -->
+    <div id="ride-list"></div>
+
+    <!-- Alertas -->
+    <div id="alert-section" style="display:none;margin-top:16px;padding-top:16px;border-top:0.5px solid var(--color-border-tertiary);">
+      <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:12px;">Alertas de cola</div>
+      <div style="display:flex;gap:8px;align-items:flex-end;margin-bottom:12px;flex-wrap:wrap;">
+        <div style="flex:2;min-width:140px;">
+          <label style="display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;">Atracción</label>
+          <select id="alert-ride" style="width:100%;"></select>
         </div>
-        <div style="flex: 1; min-width: 80px;">
-          <label style="display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px;">Máx. min</label>
-          <input type="number" id="alert-threshold" min="5" max="120" value="20" step="5" style="width: 100%;" />
+        <div style="flex:1;min-width:80px;">
+          <label style="display:block;font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;">Máx. min</label>
+          <input type="number" id="alert-threshold" min="5" max="120" value="20" step="5" style="width:100%;" />
         </div>
-        <button id="alert-add-btn" style="padding: 8px 14px;">Añadir</button>
+        <button id="alert-add-btn" style="padding:8px 14px;">Añadir</button>
       </div>
-      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-        <label style="font-size: 12px; color: var(--color-text-secondary); display: flex; align-items: center; gap: 6px; cursor: pointer;">
-          <input type="checkbox" id="alert-sound-toggle" checked style="margin: 0;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <label style="font-size:12px;color:var(--color-text-secondary);display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" id="alert-sound-toggle" checked style="margin:0;">
           Sonido al saltar la alerta
         </label>
       </div>
       <div id="alerts-list"></div>
     </div>
   </div>
-
-  <!-- Mensaje cuando el parque no está abierto hoy -->
-  <div id="now-offline-msg" class="card-padded" style="display:none;">
-    <div style="font-size: 14px; font-weight: 500; margin-bottom: 6px;">Tiempos en vivo</div>
-    <div style="font-size: 13px; color: var(--color-text-secondary); line-height: 1.5;">Los tiempos de cola en vivo solo están disponibles cuando el parque está abierto hoy.<br><br>
-    Si estás consultando para otro día, selecciona hoy en el selector de fecha para verlos.</div>
-  </div>
 </div>
 
-<!-- TAB: SHOWS -->
+<!-- TAB SHOWS -->
 <div id="tab-shows" class="tab-panel">
   <div id="show-panel" class="card-padded" style="display:none;">
-    <div class="show-disclaimer">Horarios orientativos — pueden cambiar sin previo aviso. Confirma en la app oficial de PortAventura o en los paneles del parque.</div>
+    <div class="show-disclaimer">Horarios orientativos — confirma en la app oficial o en los paneles del parque.</div>
     <div id="show-list"></div>
   </div>
   <div id="show-closed-msg" class="card-padded" style="display:none;">
-    <div style="font-size: 13px; color: var(--color-text-secondary);">El parque está cerrado en la fecha seleccionada.</div>
+    <div style="font-size:13px;color:var(--color-text-secondary);">El parque está cerrado en la fecha seleccionada.</div>
   </div>
 </div>
 
-<!-- TAB: RESTAURANTES -->
+<!-- TAB RESTAURANTES -->
 <div id="tab-restaurantes" class="tab-panel">
   <div id="rest-panel" class="card-padded" style="display:none;">
-    <div class="rest-disclaimer">Precios orientativos — pueden variar. Toca un restaurante para ver más detalle.</div>
+    <div class="rest-disclaimer">Precios orientativos. Toca un restaurante para ver más detalle.</div>
     <div id="rest-list"></div>
   </div>
   <div id="rest-closed-msg" class="card-padded" style="display:none;">
-    <div style="font-size: 13px; color: var(--color-text-secondary);">El parque está cerrado en la fecha seleccionada.</div>
+    <div style="font-size:13px;color:var(--color-text-secondary);">El parque está cerrado en la fecha seleccionada.</div>
   </div>
 </div>
 
 <div class="footer">
-  Tiempos reales vía <a href="https://queue-times.com" target="_blank">Powered by Queue-Times.com</a> · Calendario temporada 2026 · Datos refrescados cada 3 min
+  Tiempos reales vía <a href="https://queue-times.com" target="_blank">Powered by Queue-Times.com</a> · Datos meteorológicos: AEMET · Temporada 2026
 </div>
 
 </div>
 
 <!-- Modal alarma -->
-<div id="alert-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); z-index:1000; align-items:center; justify-content:center; padding:1rem;">
-  <div style="background:var(--color-background-primary); border-radius:var(--border-radius-lg); padding:1.5rem; max-width:360px; width:100%; box-shadow:0 8px 32px rgba(0,0,0,0.25);">
-    <div style="font-size:13px; color:var(--color-text-secondary); margin-bottom:8px;">🔔 Alerta de cola</div>
-    <div id="alert-modal-title" style="font-size:22px; font-weight:500; margin-bottom:6px;">—</div>
-    <div id="alert-modal-detail" style="font-size:14px; color:var(--color-text-secondary); margin-bottom:1.25rem;">—</div>
-    <div style="display:flex; gap:8px;">
-      <button id="alert-modal-snooze" style="flex:1; padding:10px;">Avisar en 10 min</button>
-      <button id="alert-modal-dismiss" style="flex:1; padding:10px; background:#C0DD97; color:#27500A; border-color:#27500A;">Descartar</button>
+<div id="alert-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:var(--color-background-primary);border-radius:var(--border-radius-lg);padding:1.5rem;max-width:360px;width:100%;box-shadow:0 8px 32px rgba(0,0,0,0.25);">
+    <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:8px;">🔔 Alerta de cola</div>
+    <div id="alert-modal-title" style="font-size:22px;font-weight:500;margin-bottom:6px;">—</div>
+    <div id="alert-modal-detail" style="font-size:14px;color:var(--color-text-secondary);margin-bottom:1.25rem;">—</div>
+    <div style="display:flex;gap:8px;">
+      <button id="alert-modal-snooze" style="flex:1;padding:10px;">Avisar en 10 min</button>
+      <button id="alert-modal-dismiss" style="flex:1;padding:10px;background:#C0DD97;color:#27500A;border-color:#27500A;">Descartar</button>
     </div>
   </div>
 </div>
 
-<!-- Modal edición favoritas -->
+<!-- Modal favoritas -->
 <div id="edit-modal" class="edit-modal">
   <div class="edit-modal-content">
     <div class="edit-modal-header">
       <div class="edit-modal-title">Mis atracciones</div>
       <div class="edit-modal-counter" id="edit-counter">0 / 10 seleccionadas</div>
     </div>
-    <div id="edit-limit-warning" class="limit-warning hidden">Has llegado al máximo de 10 atracciones. Desmarca alguna para añadir otra.</div>
+    <div id="edit-limit-warning" class="limit-warning hidden">Has llegado al máximo de 10 atracciones.</div>
     <div class="edit-modal-list" id="edit-modal-list"></div>
     <div class="edit-modal-footer">
       <button id="edit-modal-cancel">Cancelar</button>
@@ -372,25 +346,50 @@
 
 <script>
 (function(){
-  const dateInput = document.getElementById('date-input');
-  const dateWarning = document.getElementById('date-warning');
-  const todayIso = new Date().toISOString().slice(0,10);
-  const SEASON_END = '2027-01-06';
-  dateInput.value = todayIso;
-  dateInput.min = todayIso;
-  dateInput.max = SEASON_END;
+  const dateInput=document.getElementById('date-input');
+  const dateWarning=document.getElementById('date-warning');
+  const todayIso=new Date().toISOString().slice(0,10);
+  const SEASON_END='2027-01-06';
+  dateInput.value=todayIso; dateInput.min=todayIso; dateInput.max=SEASON_END;
 
-  const PROXY_BASE = 'https://portaventura-proxy.marcelopiccolo72.workers.dev';
-  const PARKS = { pa:{id:19,label:'PortAventura'}, ferrari:{id:277,label:'Ferrari Land'} };
-  const TOP_RIDES = {
-    pa:['shambhala','dragon khan','furius','hurakan','stampida','uncharted','street mission','tutuki','diablo'],
-    ferrari:['red force','thrill towers','maranello']
-  };
-  function isTopRide(pk,name){return(TOP_RIDES[pk]||[]).some(k=>(name||'').toLowerCase().includes(k));}
+  const PROXY_BASE='https://portaventura-proxy.marcelopiccolo72.workers.dev';
+  const AEMET_KEY='eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYXJjZWxvcGljY29sbzcyQGhvdG1haWwuY29tIiwianRpIjoiNzM4MGFjOGEtYWNmNS00NDYxLWJhMTAtZGNhMjEzOTJlYjdiIiwiaXNzIjoiQUVNRVQiLCJpYXQiOjE3NzgwNDQ3NzUsInVzZXJJZCI6IjczODBhYzhhLWFjZjUtNDQ2MS1iYTEwLWRjYTIxMzkyZWI3YiIsInJvbGUiOiIifQ.y4tM0oyfkbzGaOUkTi2cFyI3UCGm38NMRd3EdCH2_5Q';
+  // Código AEMET para Salou: 4316X (o usamos Tarragona 4316X / Salou 4309)
+  const AEMET_STATION='4309';
 
-  let currentRides={pa:[],ferrari:[]}, fetchStatus={pa:'pending',ferrari:'pending'}, pollTimer=null;
+  const PARKS={pa:{id:19,label:'PortAventura'},ferrari:{id:277,label:'Ferrari Land'}};
 
-  // Persistencia
+  // === LISTA FIJA DE ATRACCIONES ===
+  // Siempre visible, con o sin datos en vivo
+  const RIDES_PA = [
+    {id:'shambhala', name:'Shambhala', zone:'China', top:true, desc:'Hipercoaster de 76m de altura y 134 km/h. La montaña rusa más alta de Europa.'},
+    {id:'dragon_khan', name:'Dragon Khan', zone:'China', top:true, desc:'Montaña rusa invertida con 8 loopings. Icono del parque desde 1995.'},
+    {id:'furius', name:'Furius Baco', zone:'Mediterrània', top:true, desc:'Lanzadera de 0 a 135 km/h en 3,5 segundos. Sensación de aceleración extrema.'},
+    {id:'hurakan', name:'Hurakan Condor', zone:'México', top:true, desc:'Torre de caída libre de 100m. La más alta de Europa.'},
+    {id:'uncharted', name:'Uncharted', zone:'China', top:true, desc:'Montaña rusa oscura con giros impredecibles. Dificilísima de anticipar.'},
+    {id:'street_mission', name:'Street Mission', zone:'China', top:true, desc:'Experiencia de realidad virtual inmersiva. Combina movimiento y VR.'},
+    {id:'stampida', name:'Stampida', zone:'Far West', top:true, desc:'Doble montaña rusa de madera que compite en paralelo. Clásico del parque.'},
+    {id:'tutuki', name:'Tutuki Splash', zone:'Polynesia', top:true, desc:'Descenso en troncos con gran caída final. Prepárate para mojarte.'},
+    {id:'diablo', name:'El Diablo — Tren de la Mina', zone:'Mediterrània', top:false, desc:'Montaña rusa suave estilo mina. Buena opción para toda la familia.'},
+    {id:'silver', name:'Silver River Flume', zone:'Far West', top:false, desc:'Atracción de agua en troncos por un río. Moderadamente mojado.'},
+    {id:'grand_canyon', name:'Grand Canyon Rapids', zone:'México', top:false, desc:'Rápidos en balsa circular. Inevitable acabar mojado.'},
+    {id:'sesamo_bus', name:'Sesame Street Party Bus', zone:'SésamoAventura', top:false, desc:'Atracción para niños pequeños con los personajes de Barrio Sésamo.'},
+    {id:'anubis', name:'Anubis', zone:'Polynesia', top:false, desc:'Péndulo invertido que oscila a gran velocidad. Fuerte pero accesible.'},
+    {id:'penitence', name:'Penitence Station', zone:'Far West', top:false, desc:'Montaña rusa familiar ambientada en el salvaje oeste.'},
+  ];
+
+  const RIDES_FERRARI = [
+    {id:'red_force', name:'Red Force', zone:'Ferrari Land', top:true, desc:'Lanzadera vertical a 180 km/h. La más rápida de Europa.'},
+    {id:'thrill_towers', name:'Thrill Towers', zone:'Ferrari Land', top:true, desc:'Torres de caída libre de 112m. Dos experiencias: caída suave y brusca.'},
+    {id:'maranello', name:'Maranello Grand Race', zone:'Ferrari Land', top:true, desc:'Circuito de kartings eléctricos con licencia Ferrari. Para todas las edades.'},
+    {id:'racing_legends', name:'Racing Legends', zone:'Ferrari Land', top:false, desc:'Simulador 4D de Fórmula 1. Experiencia de piloto sin límite de edad.'},
+  ];
+
+  let liveData={}; // { rideId: {wait_time, is_open, trend} }
+  let rideHistory={};
+  let pollTimer=null;
+  let fetchStatus={pa:'idle',ferrari:'idle'};
+
   const SK={date:'pa-app-date',alerts:'pa-app-alerts',favs:'pa-app-favs',mode:'pa-app-mode',tab:'pa-app-tab'};
   const FAVS_LIMIT=10;
   function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
@@ -401,81 +400,52 @@
   function loadSavedDate(){const v=lsGet(SK.date);return(v&&v>=todayIso&&v<=SEASON_END)?v:null;}
   function loadAlerts(){
     const arr=lsJson(SK.alerts)||[];
-    return arr.filter(a=>a&&PARKS[a.parkKey]&&typeof a.threshold==='number'&&typeof a.rideId==='number')
+    return arr.filter(a=>a&&typeof a.threshold==='number'&&typeof a.rideId==='string')
       .map(a=>({id:a.id,parkKey:a.parkKey,rideId:a.rideId,name:a.name,threshold:a.threshold,state:a.state||'armed',snoozeUntil:a.snoozeUntil||0}));
   }
-  function loadFavs(){return(lsJson(SK.favs)||[]).filter(f=>f&&PARKS[f.parkKey]&&typeof f.rideId==='number').slice(0,FAVS_LIMIT);}
+  function loadFavs(){return(lsJson(SK.favs)||[]).filter(f=>f&&typeof f.rideId==='string').slice(0,FAVS_LIMIT);}
   function loadMode(){const v=lsGet(SK.mode);return(v==='all'||v==='mine')?v:'mine';}
   function loadTab(){const v=lsGet(SK.tab);return(['atracciones','shows','restaurantes'].includes(v))?v:'atracciones';}
 
-  const sd=loadSavedDate(); if(sd) dateInput.value=sd;
-  let alerts=loadAlerts(), favs=loadFavs(), mode=loadMode(), activeTab=loadTab();
+  const sd=loadSavedDate();if(sd)dateInput.value=sd;
+  let alerts=loadAlerts(),favs=loadFavs(),mode=loadMode(),activeTab=loadTab();
 
-  // === TABS ===
-  function switchTab(tab) {
-    activeTab=tab; lsSet(SK.tab,tab);
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));
-    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+tab));
-  }
+  // TABS
+  function switchTab(tab){activeTab=tab;lsSet(SK.tab,tab);document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(p=>p.classList.toggle('active',p.id==='tab-'+tab));}
   document.querySelectorAll('.tab-btn').forEach(btn=>btn.addEventListener('click',()=>switchTab(btn.dataset.tab)));
   switchTab(activeTab);
 
-  // === ALARMAS ===
-  const alertQueue=[]; let alertModalOpen=false, audioCtx=null;
+  // ALARMAS
+  const alertQueue=[];let alertModalOpen=false,audioCtx=null;
   function getAudioCtx(){if(audioCtx)return audioCtx;try{const C=window.AudioContext||window.webkitAudioContext;audioCtx=new C();return audioCtx;}catch(e){return null;}}
-  function playBeep(){
-    if(!document.getElementById('alert-sound-toggle').checked)return;
-    const ctx=getAudioCtx();if(!ctx)return;
-    try{
-      if(ctx.state==='suspended')ctx.resume();
-      [880,1100,1320].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;const s=ctx.currentTime+i*0.18,e=s+0.15;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(0.25,s+0.02);g.gain.linearRampToValueAtTime(0,e);o.connect(g).connect(ctx.destination);o.start(s);o.stop(e+0.05);});
-    }catch(e){}
-  }
+  function playBeep(){if(!document.getElementById('alert-sound-toggle').checked)return;const ctx=getAudioCtx();if(!ctx)return;try{if(ctx.state==='suspended')ctx.resume();[880,1100,1320].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.type='sine';o.frequency.value=f;const s=ctx.currentTime+i*0.18,e=s+0.15;g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(0.25,s+0.02);g.gain.linearRampToValueAtTime(0,e);o.connect(g).connect(ctx.destination);o.start(s);o.stop(e+0.05);});}catch(e){}}
   function vibrate(){if(navigator.vibrate)try{navigator.vibrate([200,100,200]);}catch(e){}}
   function enqueueAlert(a,w){alertQueue.push({alert:a,waitTime:w});if(!alertModalOpen)showNextAlert();}
-  function showNextAlert(){
-    if(alertModalOpen)return;const next=alertQueue.shift();if(!next)return;
-    alertModalOpen=true;
-    document.getElementById('alert-modal-title').textContent=next.alert.name;
-    document.getElementById('alert-modal-detail').innerHTML='Cola actual: <strong>'+next.waitTime+' min</strong><br>En '+(PARKS[next.alert.parkKey]?PARKS[next.alert.parkKey].label:'')+' · tu umbral: ≤ '+next.alert.threshold+' min';
-    document.getElementById('alert-modal').style.display='flex';playBeep();vibrate();
-    document.getElementById('alert-modal').dataset.alertId=next.alert.id;
-  }
+  function showNextAlert(){if(alertModalOpen)return;const next=alertQueue.shift();if(!next)return;alertModalOpen=true;document.getElementById('alert-modal-title').textContent=next.alert.name;document.getElementById('alert-modal-detail').innerHTML='Cola actual: <strong>'+next.waitTime+' min</strong><br>Umbral: ≤ '+next.alert.threshold+' min';document.getElementById('alert-modal').style.display='flex';playBeep();vibrate();document.getElementById('alert-modal').dataset.alertId=next.alert.id;}
   function closeModalAndContinue(){document.getElementById('alert-modal').style.display='none';alertModalOpen=false;setTimeout(showNextAlert,200);}
-  document.getElementById('alert-modal-dismiss').addEventListener('click',()=>{
-    const id=parseInt(document.getElementById('alert-modal').dataset.alertId,10);
-    alerts=alerts.filter(a=>a.id!==id);lsSetJson(SK.alerts,alerts);renderAlerts();closeModalAndContinue();
-  });
-  document.getElementById('alert-modal-snooze').addEventListener('click',()=>{
-    const id=parseInt(document.getElementById('alert-modal').dataset.alertId,10);
-    const a=alerts.find(x=>x.id===id);
-    if(a){a.state='snoozed';a.snoozeUntil=Date.now()+10*60*1000;lsSetJson(SK.alerts,alerts);renderAlerts();}
-    closeModalAndContinue();
-  });
+  document.getElementById('alert-modal-dismiss').addEventListener('click',()=>{const id=document.getElementById('alert-modal').dataset.alertId;alerts=alerts.filter(a=>a.id!=id);lsSetJson(SK.alerts,alerts);renderAlerts();closeModalAndContinue();});
+  document.getElementById('alert-modal-snooze').addEventListener('click',()=>{const id=document.getElementById('alert-modal').dataset.alertId;const a=alerts.find(x=>x.id==id);if(a){a.state='snoozed';a.snoozeUntil=Date.now()+10*60*1000;lsSetJson(SK.alerts,alerts);renderAlerts();}closeModalAndContinue();});
 
-  // === HELPERS FECHA ===
+  // HELPERS FECHA
   function between(mmdd,a,b){return mmdd>=a&&mmdd<=b;}
   function isPaClosed(mmdd){return mmdd>='01-07'&&mmdd<'02-14';}
-  function isFerrariSeason(mmdd){
-    // Ferrari Land abre desde el 27 feb. En noviembre cierra lun-jue.
-    // En diciembre tiene su propio patrón (gestionado en getHours).
-    if(mmdd<'02-27') return false;
-    if(mmdd>'12-31') return false;
-    // Noviembre: solo abre vie/sáb/dom — lo gestiona getHours devolviendo null para otros días
-    return true;
+  function isFerrariOpen(mmdd,day,weekend,festivo,bloque){
+    if(mmdd<'02-27')return false;
+    if(between(mmdd,'02-27','04-30'))return !!(weekend||festivo||bloque);
+    if(between(mmdd,'05-01','10-31'))return true;
+    if(between(mmdd,'11-01','11-30'))return day===5||weekend;
+    if(between(mmdd,'12-01','12-31')){if(day===5||weekend)return true;if(between(mmdd,'12-21','12-30')&&day>=1&&day<=4)return true;return false;}
+    return false;
   }
   function parseHours(s){if(!s)return null;const m=s.match(/^(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})$/);return m?{openMins:+m[1]*60+ +m[2],closeMins:+m[3]*60+ +m[4]}:null;}
   function isParkOpenNow(h){const p=parseHours(h);if(!p)return false;const n=new Date().getHours()*60+new Date().getMinutes();let c=p.closeMins===0?24*60:p.closeMins;if(c<p.openMins)c+=24*60;return n>=p.openMins&&n<c;}
 
-  // === FESTIVOS ===
+  // FESTIVOS
   const FF={'01-01':'Año Nuevo','01-06':'Reyes','05-01':'Día del Trabajo','06-24':'Sant Joan','08-15':'Asunción','09-11':'Diada','09-24':'La Mercè','10-12':'Fiesta Nacional','11-01':'Todos los Santos','12-06':'Constitución','12-08':'Inmaculada','12-25':'Navidad','12-26':'Sant Esteve'};
   const FM={2026:{'04-02':'Jueves Santo','04-03':'Viernes Santo','04-06':'Lunes de Pascua'},2027:{'03-25':'Jueves Santo','03-26':'Viernes Santo','03-29':'Lunes de Pascua'}};
   function festivos(y){return Object.assign({},FF,FM[y]||{});}
   function esFestivo(d){return festivos(d.getUTCFullYear())[d.toISOString().slice(5,10)]||null;}
-  function enBloqueFestivo(date){
-    for(let o=-3;o<=3;o++){const d=new Date(date.getTime()+o*86400000),n=esFestivo(d);if(!n)continue;const fd=d.getUTCDay();const arr=fd===5?[0,1,2]:fd===1?[-2,-1,0]:fd===2?[-3,-2,-1,0]:fd===4?[0,1,2,3]:[0];if(arr.includes(-o))return{nombre:n,festivoDate:d};}
-    return null;
-  }
+  function enBloqueFestivo(date){for(let o=-3;o<=3;o++){const d=new Date(date.getTime()+o*86400000),n=esFestivo(d);if(!n)continue;const fd=d.getUTCDay();const arr=fd===5?[0,1,2]:fd===1?[-2,-1,0]:fd===2?[-3,-2,-1,0]:fd===4?[0,1,2,3]:[0];if(arr.includes(-o))return{nombre:n,festivoDate:d};}return null;}
 
   function validateDate(){
     const val=dateInput.value;dateWarning.textContent='';
@@ -491,7 +461,7 @@
 
   function getAffluence(date){
     const mmdd=date.toISOString().slice(5,10);
-    if(isPaClosed(mmdd))return{level:'closed',label:'Parque cerrado',reason:'PortAventura cierra del 7 de enero al 13 de febrero para mantenimiento anual.'};
+    if(isPaClosed(mmdd))return{level:'closed',label:'Parque cerrado',reason:'PortAventura cierra del 7 de enero al 13 de febrero.'};
     const day=date.getDay(),month=date.getMonth()+1,weekend=day===0||day===6;
     const festivo=esFestivo(date),bloque=enBloqueFestivo(date);
     if(month===7||month===8)return{level:'high',label:'Alta',reason:'Factores: pleno verano'+(weekend?', '+(day===6?'sábado':'domingo'):'')+'. '};
@@ -522,24 +492,10 @@
     else if(between(mmdd,'02-14','03-25'))pa=weekend?'10:30 - 19:00':'10:30 - 18:00';
     else pa=enFP?'10:30 - 19:30':(weekend||friday?'10:30 - 19:00':'10:30 - 18:00');
     let ferrari=null;
-    // Horarios Ferrari Land según calendario oficial 2026
-    if(between(mmdd,'02-27','04-30')){
-      // Feb-Abril: solo fines de semana y festivos
-      if(weekend||festivo||bloque) ferrari='16:30 - 22:00';
-    } else if(between(mmdd,'05-01','10-31')){
-      // Mayo–Octubre: todos los días
-      ferrari='16:30 - 22:00';
-    } else if(between(mmdd,'11-01','11-30')){
-      // Noviembre: solo vie 17:00–22:00, sáb/dom 16:30–22:00
-      if(day===5) ferrari='17:00 - 22:00';
-      else if(weekend) ferrari='16:30 - 22:00';
-    } else if(between(mmdd,'12-01','12-31')){
-      // Diciembre
-      if(mmdd==='12-24'||mmdd==='12-31') ferrari='13:00 - 19:00';
-      else if(day===5) ferrari='17:00 - 22:00';
-      else if(weekend) ferrari='16:30 - 22:00';
-      else if(between(mmdd,'12-21','12-30')&&day>=1&&day<=4) ferrari='16:30 - 22:00';
-    }
+    if(between(mmdd,'02-27','04-30')){if(weekend||festivo||bloque)ferrari='16:30 - 22:00';}
+    else if(between(mmdd,'05-01','10-31'))ferrari='16:30 - 22:00';
+    else if(between(mmdd,'11-01','11-30')){if(day===5)ferrari='17:00 - 22:00';else if(weekend)ferrari='16:30 - 22:00';}
+    else if(between(mmdd,'12-01','12-31')){if(mmdd==='12-24'||mmdd==='12-31')ferrari='13:00 - 19:00';else if(day===5)ferrari='17:00 - 22:00';else if(weekend)ferrari='16:30 - 22:00';else if(between(mmdd,'12-21','12-30')&&day>=1&&day<=4)ferrari='16:30 - 22:00';}
     let caribe=null;
     if(between(mmdd,'07-01','08-31'))caribe='11:00 - 19:00';
     else if(between(mmdd,'06-01','06-30')||between(mmdd,'09-01','09-20'))caribe='11:00 - 18:30';
@@ -556,17 +512,230 @@
     return'spring';
   }
 
-  // === SHOWS ===
+  function getSeasonWarning(date){
+    const mmdd=date.toISOString().slice(5,10);
+    if(isPaClosed(mmdd))return null;
+    const season=getSeason(date);
+    if(between(mmdd,'02-14','05-15'))return'⚠️ En esta época algunas atracciones pueden estar cerradas por mantenimiento, especialmente las de agua (Tutuki Splash, Stampida). Confirma en la app oficial.';
+    if(season==='halloween')return'⚠️ En temporada de Halloween algunas atracciones de agua pueden estar cerradas.';
+    if(season==='xmas')return'⚠️ En Navidad la oferta de atracciones es reducida. Confirma en la app oficial.';
+    return null;
+  }
+
+  // === TIEMPO AEMET ===
+  const AEMET_ESTADOS={
+    11:'☀️ Despejado',12:'🌤 Poco nuboso',13:'⛅ Intervalos nubosos',14:'☁️ Nuboso',15:'☁️ Muy nuboso',16:'☁️ Cubierto',
+    17:'🌫 Nubes altas',23:'🌧 Intervalos nubosos con lluvia',24:'🌧 Nuboso con lluvia',25:'🌧 Muy nuboso con lluvia',
+    26:'🌧 Cubierto con lluvia',33:'⛈ Intervalos nubosos con tormenta',34:'⛈ Nuboso con tormenta',
+    43:'🌨 Intervalos nubosos con nieve',44:'🌨 Nuboso con nieve',51:'🌦 Lluvia débil',52:'🌧 Lluvia moderada',
+    53:'🌧 Lluvia fuerte',61:'⛈ Tormenta',71:'🌨 Nieve débil',72:'🌨 Nieve moderada',
+  };
+
+  async function fetchWeather(dateStr){
+    const content=document.getElementById('weather-content');
+    const diffDays=Math.round((new Date(dateStr+'T12:00:00')-new Date(todayIso+'T12:00:00'))/86400000);
+    if(diffDays<0||diffDays>6){content.innerHTML='<span style="font-size:13px;color:var(--color-text-tertiary);">Previsión disponible solo para los próximos 7 días.</span>';return;}
+    content.innerHTML='<span style="font-size:13px;color:var(--color-text-tertiary);">Cargando previsión...</span>';
+    try{
+      // AEMET: primero obtenemos la URL de datos
+      const r1=await fetch('https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/'+AEMET_STATION+'/?api_key='+AEMET_KEY);
+      const j1=await r1.json();
+      if(!j1.datos)throw new Error('Sin URL de datos');
+      const r2=await fetch(j1.datos);
+      const data=await r2.json();
+      const pred=data[0]?.prediccion?.dia;
+      if(!pred||!pred.length)throw new Error('Sin predicción');
+      const dia=pred.find(d=>d.fecha&&d.fecha.startsWith(dateStr));
+      if(!dia)throw new Error('Fecha no encontrada');
+
+      const tmax=dia.temperatura?.maxima??'—';
+      const tmin=dia.temperatura?.minima??'—';
+      const rain=dia.probPrecipitacion?.find(p=>p.periodo==='00-24')?.value??dia.probPrecipitacion?.[0]?.value??'—';
+      const stateCode=dia.estadoCielo?.find(p=>p.periodo==='00-24')?.value??dia.estadoCielo?.[0]?.value??'';
+      const stateDesc=AEMET_ESTADOS[parseInt(stateCode)]||'🌡 '+stateCode;
+      const emoji=stateDesc.split(' ')[0];
+      const desc=stateDesc.split(' ').slice(1).join(' ');
+
+      let html='<div style="display:flex;align-items:center;gap:14px;">';
+      html+='<div style="font-size:28px;">'+emoji+'</div>';
+      html+='<div><div style="font-size:15px;font-weight:500;color:var(--color-text-primary);">'+desc+'</div>';
+      html+='<div style="font-size:13px;color:var(--color-text-secondary);">'+tmax+'° / '+tmin+'° · Prob. lluvia: '+rain+'%</div></div></div>';
+
+      // Aviso si lluvia probable
+      if(parseInt(rain)>=50){html+='<div style="font-size:12px;color:var(--color-text-warning);margin-top:8px;line-height:1.4;">☔ Lluvia probable — lleva chubasquero. Las colas suelen bajar con lluvia.</div>';}
+      else if(parseInt(tmax)>=35){html+='<div style="font-size:12px;color:var(--color-text-warning);margin-top:8px;line-height:1.4;">🌡 Calor extremo — hidrátate bien y aprovecha las zonas de agua.</div>';}
+
+      content.innerHTML=html;
+    }catch(e){
+      content.innerHTML='<span style="font-size:13px;color:var(--color-text-tertiary);">No se ha podido cargar la previsión de AEMET.</span>';
+    }
+  }
+
+  // === RENDER ATRACCIONES (siempre visible) ===
+  function waitClass(w){return w<=15?'wait-low':w<=35?'wait-med':'wait-high';}
+
+  function getTrend(rideId){
+    const h=rideHistory[rideId];
+    if(!h||h.length<2)return null;
+    const diff=h[h.length-1]-h[h.length-2];
+    if(diff>=5)return{arrow:'↑',color:'#791F1F',title:'Cola subiendo'};
+    if(diff<=-5)return{arrow:'↓',color:'#27500A',title:'Cola bajando'};
+    return{arrow:'→',color:'var(--color-text-tertiary)',title:'Cola estable'};
+  }
+
+  function buildRideRow(ride, parkKey){
+    const live=liveData[ride.id];
+    const haslive=!!live;
+    let pillHtml='';
+    if(haslive){
+      const w=live.wait_time||0;
+      let pc,pv;
+      if(!live.is_open){pc='wait-closed';pv='Sin datos';}
+      else if(w>0){pc=waitClass(w);pv=w+' min';}
+      else{pc='wait-closed';pv='— min';}
+      const trend=getTrend(ride.id);
+      const trendHtml=trend?'<span class="trend" style="color:'+trend.color+'" title="'+trend.title+'">'+trend.arrow+'</span>':'';
+      pillHtml='<div class="wait-pill '+pc+'">'+pv+trendHtml+'</div>';
+    }
+
+    return '<div class="ride-row" onclick="this.classList.toggle(\'open\')">' +
+      '<div class="ride-left">' +
+        '<div class="ride-name'+(ride.top?' top':'')+'">'+(haslive?'<span class="live-badge">EN VIVO</span> ':'')+ride.name+'</div>'+
+        '<div class="ride-zone">'+ride.zone+'</div>'+
+        '<div class="ride-desc">'+ride.desc+'</div>'+
+      '</div>'+
+      '<div class="ride-right">'+pillHtml+'</div>'+
+    '</div>';
+  }
+
+  function renderRideList(){
+    const listEl=document.getElementById('ride-list');
+    const favIds=new Set(favs.map(f=>f.rideId));
+    let pool_pa=mode==='mine'?RIDES_PA.filter(r=>favIds.has(r.id)):RIDES_PA.slice();
+    let pool_fl=mode==='mine'?RIDES_FERRARI.filter(r=>favIds.has(r.id)):RIDES_FERRARI.slice();
+
+    // Ordenar: con datos en vivo primero por tiempo asc, sin datos al final
+    function sortRides(arr){
+      return arr.slice().sort((a,b)=>{
+        const la=liveData[a.id],lb=liveData[b.id];
+        const wa=la&&la.is_open&&(la.wait_time||0)>0?la.wait_time:999;
+        const wb=lb&&lb.is_open&&(lb.wait_time||0)>0?lb.wait_time:999;
+        if(wa!==wb)return wa-wb;
+        return a.name.localeCompare(b.name,'es');
+      });
+    }
+
+    pool_pa=sortRides(pool_pa);
+    pool_fl=sortRides(pool_fl);
+
+    let html='';
+    if(mode==='mine'&&favs.length===0){
+      html='<div style="font-size:13px;color:var(--color-text-secondary);padding:14px 0;text-align:center;line-height:1.5;">Aún no has elegido tus atracciones.<br>Selecciónalas (hasta '+FAVS_LIMIT+') para verlas aquí.<br><button onclick="openEditModal()" style="margin-top:10px;background:var(--color-accent);color:white;border:none;padding:8px 16px;font-size:13px;border-radius:8px;">Elegir mis atracciones</button></div>';
+      listEl.innerHTML=html;return;
+    }
+
+    if(pool_pa.length){
+      html+='<div class="park-section-header">PortAventura Park</div>';
+      html+=pool_pa.map(r=>buildRideRow(r,'pa')).join('');
+    }
+    if(pool_fl.length){
+      html+='<div class="park-section-header">Ferrari Land</div>';
+      html+=pool_fl.map(r=>buildRideRow(r,'ferrari')).join('');
+    }
+    if(!html)html='<div style="font-size:13px;color:var(--color-text-secondary);padding:14px 0;text-align:center;">No tienes atracciones seleccionadas en estos parques.</div>';
+    listEl.innerHTML=html;
+
+    // Botón editar dentro de cada cabecera de parque
+    listEl.querySelectorAll('.park-section-header').forEach(h=>{
+      const btn=document.createElement('button');
+      btn.textContent='Editar';btn.style.cssText='background:transparent;border:none;font-size:11px;color:var(--color-accent);cursor:pointer;padding:0;height:auto;';
+      btn.onclick=e=>{e.stopPropagation();openEditModal();};
+      h.appendChild(btn);
+    });
+  }
+
+  // TOGGLE MODO
+  document.getElementById('mode-mine').addEventListener('click',()=>{if(mode==='mine')return;mode='mine';lsSet(SK.mode,mode);document.getElementById('mode-mine').classList.add('active');document.getElementById('mode-all').classList.remove('active');renderRideList();});
+  document.getElementById('mode-all').addEventListener('click',()=>{if(mode==='all')return;mode='all';lsSet(SK.mode,mode);document.getElementById('mode-all').classList.add('active');document.getElementById('mode-mine').classList.remove('active');renderRideList();});
+
+  // MODAL FAVORITAS
+  let editSelection=[];
+  function openEditModal(){editSelection=favs.map(f=>({rideId:f.rideId}));renderEditModal();document.getElementById('edit-modal').style.display='flex';}
+  function closeEditModal(){document.getElementById('edit-modal').style.display='none';}
+  function isSel(id){return editSelection.some(f=>f.rideId===id);}
+  function toggleFav(id){
+    const w=document.getElementById('edit-limit-warning'),idx=editSelection.findIndex(f=>f.rideId===id);
+    if(idx>=0){editSelection.splice(idx,1);w.classList.add('hidden');}
+    else{if(editSelection.length>=FAVS_LIMIT){w.classList.remove('hidden');return;}editSelection.push({rideId:id});w.classList.add('hidden');}
+    document.getElementById('edit-counter').textContent=editSelection.length+' / '+FAVS_LIMIT+' seleccionadas';
+    const rowEl=document.querySelector('.edit-row[data-ride="'+id+'"]');
+    if(rowEl){const ns=isSel(id);rowEl.classList.toggle('at-limit',!ns&&editSelection.length>=FAVS_LIMIT);const ch=rowEl.querySelector('.edit-check');if(ch)ch.classList.toggle('checked',ns);}
+    document.querySelectorAll('.edit-row').forEach(row=>{const r=row.dataset.ride;row.classList.toggle('at-limit',editSelection.length>=FAVS_LIMIT&&!isSel(r));});
+  }
+  function renderEditModal(){
+    document.getElementById('edit-counter').textContent=editSelection.length+' / '+FAVS_LIMIT+' seleccionadas';
+    const listEl=document.getElementById('edit-modal-list');
+    let html='';
+    const groups=[{label:'PortAventura Park',rides:RIDES_PA},{label:'Ferrari Land',rides:RIDES_FERRARI}];
+    groups.forEach(g=>{
+      html+='<div class="edit-park-header">'+g.label+'</div>';
+      g.rides.forEach(r=>{const sel=isSel(r.id),al=!sel&&editSelection.length>=FAVS_LIMIT;html+='<div class="edit-row'+(al?' at-limit':'')+'" data-ride="'+r.id+'"><div class="edit-check'+(sel?' checked':'')+'"></div><div class="edit-row-label">'+r.name+(r.top?' <span style="color:#E6A91C;font-size:13px;">★</span>':'')+' <span style="font-size:11px;color:var(--color-text-tertiary);">'+r.zone+'</span></div></div>';});
+    });
+    listEl.innerHTML=html;
+    const newList=listEl.cloneNode(true);listEl.parentNode.replaceChild(newList,listEl);
+    newList.addEventListener('click',e=>{const row=e.target.closest('.edit-row');if(!row)return;const id=row.dataset.ride;if(!id)return;if(row.classList.contains('at-limit')&&!isSel(id))return;toggleFav(id);});
+  }
+  document.getElementById('edit-modal-cancel').addEventListener('click',closeEditModal);
+  document.getElementById('edit-modal-save').addEventListener('click',()=>{favs=editSelection.map(f=>({rideId:f.rideId}));lsSetJson(SK.favs,favs);closeEditModal();renderRideList();populateAlertSelect();});
+  document.getElementById('edit-modal').addEventListener('click',e=>{if(e.target.id==='edit-modal')closeEditModal();});
+
+  // ALERTAS
+  const alertSel=document.getElementById('alert-ride');
+  function populateAlertSelect(){
+    alertSel.innerHTML='';
+    const allRides=[...RIDES_PA.map(r=>({...r,parkKey:'pa'})),...RIDES_FERRARI.map(r=>({...r,parkKey:'ferrari'}))];
+    const favIds=new Set(favs.map(f=>f.rideId));
+    const favR=allRides.filter(r=>favIds.has(r.id)),othR=allRides.filter(r=>!favIds.has(r.id));
+    if(favR.length){const g=document.createElement('optgroup');g.label='Mis favoritas';favR.forEach(r=>{const o=document.createElement('option');o.value=r.parkKey+'|'+r.id;o.textContent=r.name;g.appendChild(o);});alertSel.appendChild(g);}
+    if(othR.length){const g=document.createElement('optgroup');g.label='Todas';othR.forEach(r=>{const o=document.createElement('option');o.value=r.parkKey+'|'+r.id;o.textContent=r.name+' ('+r.zone+')';g.appendChild(o);});alertSel.appendChild(g);}
+  }
+  function renderAlerts(){
+    const list=document.getElementById('alerts-list');
+    if(!alerts.length){list.innerHTML='<div style="font-size:13px;color:var(--color-text-tertiary);padding:8px 0;">Aún no has creado ninguna alerta.</div>';return;}
+    const now=Date.now();let changed=false;
+    list.innerHTML=alerts.map(a=>{
+      if(a.state==='snoozed'&&now>=a.snoozeUntil){a.state='armed';a.snoozeUntil=0;changed=true;}
+      const live=liveData[a.rideId];let sh,fired=false;
+      if(!live)sh='<span style="color:var(--color-text-tertiary);font-size:13px;">Sin datos en vivo</span>';
+      else if(!live.is_open)sh='<span style="color:var(--color-text-secondary);font-size:13px;">Sin datos</span>';
+      else{const w=live.wait_time||0,c=w>0&&w<=a.threshold;if(c&&a.state==='armed'){a.state='fired';changed=true;enqueueAlert(a,w);fired=true;sh='<span style="color:#27500A;font-weight:500;font-size:14px;">¡'+w+' min ahora!</span>';}else if(c&&a.state==='fired'){fired=true;sh='<span style="color:#27500A;font-weight:500;font-size:14px;">¡'+w+' min ahora!</span>';}else if(a.state==='snoozed'){const mr=Math.max(1,Math.ceil((a.snoozeUntil-now)/60000));sh='<span style="color:var(--color-text-tertiary);font-size:13px;">'+w+' min · silenciada '+mr+' min</span>';}else sh='<span style="color:var(--color-text-secondary);font-size:13px;">'+w+' min</span>';}
+      return'<div class="alert-row '+(fired?'alert-fired':'')+'"><div><div style="font-size:14px;">'+a.name+'</div><div style="font-size:12px;color:var(--color-text-secondary);">Avisar cuando ≤ '+a.threshold+' min</div></div><div style="display:flex;gap:10px;align-items:center;">'+sh+'<button class="x-btn" data-alert-id="'+a.id+'">×</button></div></div>';
+    }).join('');
+    if(changed)lsSetJson(SK.alerts,alerts);
+    list.querySelectorAll('[data-alert-id]').forEach(btn=>btn.addEventListener('click',()=>{alerts=alerts.filter(a=>a.id!=btn.dataset.alertId);lsSetJson(SK.alerts,alerts);renderAlerts();}));
+  }
+  function addAlert(){
+    const val=alertSel.value;if(!val||!val.includes('|'))return;
+    const[pk,rideId]=val.split('|');
+    const allRides=[...RIDES_PA,...RIDES_FERRARI];
+    const ride=allRides.find(r=>r.id===rideId);if(!ride)return;
+    const threshold=parseInt(document.getElementById('alert-threshold').value,10)||20;
+    alerts=alerts.filter(a=>a.rideId!==rideId);
+    alerts.push({id:Date.now(),parkKey:pk,rideId,name:ride.name,threshold,state:'armed',snoozeUntil:0});
+    lsSetJson(SK.alerts,alerts);renderAlerts();
+  }
+
+  // SHOWS
   const SHOWS=[
-    {name:'Show Far West (Saloon)',zone:'Far West · Long Branch Saloon',seasons:['spring','summer','halloween','xmas'],times:['12:30','15:30','16:30'],note:null,requiresReservation:'Requiere reserva de mesa el mismo día (gratis) y consumición mínima en el Saloon.'},
-    {name:'Aloha Tahití',zone:'Polynesia',seasons:['spring','summer'],times:['12:00','15:45','17:00','18:15'],note:'Horarios válidos cuando el parque cierra a las 19-20h. En verano pueden variar.',requiresReservation:null},
-    {name:'Noches de Fuego en Tahití',zone:'Polynesia',seasons:['summer'],times:[],note:'Versión nocturna de Aloha Tahití. Solo verano (27 jun – 5 sep).',requiresReservation:null},
-    {name:'Fiesta Mexicana',zone:'México · La Cantina',seasons:['summer'],times:[],note:'Solo temporada alta de verano (27 jun – 5 sep).',requiresReservation:null},
-    {name:'FiestAventura',zone:'Mediterrània (lago)',seasons:['summer'],times:[],note:'Desfile nocturno + fuegos artificiales. Solo verano (27 jun – 5 sep).',requiresReservation:null},
-    {name:'Cuidemos el Planeta',zone:'SésamoAventura',seasons:['always'],times:[],note:'Espectáculo infantil con personajes de Barrio Sésamo. Consulta horario en la app oficial.',requiresReservation:null},
-    {name:'Un Viaje Fascinante',zone:'China · Gran Teatro Imperial',seasons:['spring','summer','halloween'],times:[],note:'Show de acrobacias y danza. Consulta horario en la app oficial.',requiresReservation:null},
-    {name:'Templo del Fuego',zone:'China',seasons:['spring','summer'],weekendOnly:true,times:[],note:'Atracción-espectáculo. Primavera: solo fines de semana y festivos. Verano: todos los días excepto viernes.',requiresReservation:null},
-    {name:'PortAventura Parade',zone:'Mediterrània',seasons:['spring','summer','halloween','xmas'],times:[],note:'Desfile de personajes ~20 min antes del cierre. Consulta horario en la app oficial.',requiresReservation:null},
+    {name:'Show Far West (Saloon)',zone:'Far West · Long Branch Saloon',seasons:['spring','summer','halloween','xmas'],times:['12:30','15:30','16:30'],note:null,requiresReservation:'Requiere reserva de mesa el mismo día (gratis) y consumición mínima.'},
+    {name:'Aloha Tahití',zone:'Polynesia',seasons:['spring','summer'],times:['12:00','15:45','17:00','18:15'],note:'Horarios válidos cuando el parque cierra a las 19-20h.',requiresReservation:null},
+    {name:'Noches de Fuego en Tahití',zone:'Polynesia',seasons:['summer'],times:[],note:'Solo verano (27 jun – 5 sep).',requiresReservation:null},
+    {name:'Fiesta Mexicana',zone:'México · La Cantina',seasons:['summer'],times:[],note:'Solo temporada alta de verano.',requiresReservation:null},
+    {name:'FiestAventura',zone:'Mediterrània (lago)',seasons:['summer'],times:[],note:'Desfile nocturno + fuegos. Solo verano.',requiresReservation:null},
+    {name:'Cuidemos el Planeta',zone:'SésamoAventura',seasons:['always'],times:[],note:'Espectáculo infantil. Consulta horario en la app oficial.',requiresReservation:null},
+    {name:'Un Viaje Fascinante',zone:'China · Gran Teatro Imperial',seasons:['spring','summer','halloween'],times:[],note:'Show de acrobacias. Consulta horario en la app oficial.',requiresReservation:null},
+    {name:'Templo del Fuego',zone:'China',seasons:['spring','summer'],weekendOnly:true,times:[],note:'Solo fines de semana y festivos en primavera.',requiresReservation:null},
+    {name:'PortAventura Parade',zone:'Mediterrània',seasons:['spring','summer','halloween','xmas'],times:[],note:'Desfile ~20 min antes del cierre. Consulta horario en la app oficial.',requiresReservation:null},
   ];
 
   function renderShows(date){
@@ -579,30 +748,27 @@
     const avail=SHOWS.filter(s=>{if(!s.seasons.includes(season)&&!s.seasons.includes('always'))return false;if(s.weekendOnly&&!esFindeOFestivo)return false;return true;});
     const unavail=SHOWS.filter(s=>{if(s.seasons.includes('always'))return false;if(s.seasons.includes(season))return s.weekendOnly&&!esFindeOFestivo;return true;});
     let html='';
-    avail.forEach(s=>{
-      const timesHtml=s.times.length?s.times.map(t=>'<span class="show-time-pill">'+t+'</span>').join(''):'<span class="show-unavailable">Ver app oficial</span>';
-      html+='<div class="show-row"><div class="show-info"><div class="show-name">'+s.name+'</div><div class="show-zone">'+s.zone+'</div>'+(s.requiresReservation?'<div class="show-note">⚠️ '+s.requiresReservation+'</div>':'')+(s.note?'<div class="show-note" style="color:var(--color-text-tertiary);">'+s.note+'</div>':'')+'</div><div class="show-times">'+timesHtml+'</div></div>';
-    });
+    avail.forEach(s=>{const timesHtml=s.times.length?s.times.map(t=>'<span class="show-time-pill">'+t+'</span>').join(''):'<span class="show-unavailable">Ver app oficial</span>';html+='<div class="show-row"><div class="show-info"><div class="show-name">'+s.name+'</div><div class="show-zone">'+s.zone+'</div>'+(s.requiresReservation?'<div class="show-note">⚠️ '+s.requiresReservation+'</div>':'')+(s.note?'<div class="show-note" style="color:var(--color-text-tertiary);">'+s.note+'</div>':'')+'</div><div class="show-times">'+timesHtml+'</div></div>';});
     if(unavail.length)html+='<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--color-border-tertiary);"><div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:4px;">No disponibles hoy:</div><div style="font-size:12px;color:var(--color-text-tertiary);">'+unavail.map(s=>s.name).join(' · ')+'</div></div>';
     document.getElementById('show-list').innerHTML=html;
   }
 
-  // === RESTAURANTES ===
+  // RESTAURANTES
   const RESTAURANTS=[
-    {name:'Racó de Mar',park:'pa',zone:'Mediterrània',tipo:'carta',precio:'€€€',cocina:'Mediterránea',desc:'Restaurante de mesa con vistas al puerto. Carta mediterránea: arroces, pescados y carnes. Ambiente tranquilo.',note:null,season:'always'},
-    {name:'Vinosfera',park:'pa',zone:'Mediterrània',tipo:'carta',precio:'€€€',cocina:'Mediterránea · vinos',desc:'Restaurante de mesa especializado en vinos de la zona maridados con cocina mediterránea.',note:null,season:'always'},
-    {name:'Long Branch Saloon',park:'pa',zone:'Far West',tipo:'carta',precio:'€€€',cocina:'Americana',desc:'Restaurante de mesa dentro del Saloon con show de can-can incluido. Costillas, hamburguesas, steaks.',note:'⚠️ Requiere reserva de mesa el mismo día (gratis) y consumición mínima.',season:'always'},
-    {name:'The Iron Horse',park:'pa',zone:'Far West',tipo:'carta',precio:'€€€',cocina:'Americana',desc:'Restaurante de mesa frente al Silver River Flume. Ensalada César, costillas, hamburguesas. Se puede reservar.',note:null,season:'always'},
-    {name:'The Old Steak House',park:'pa',zone:'Far West',tipo:'autoservicio',precio:'€€',cocina:'Americana · carnes',desc:'Autoservicio grande estilo asador americano. Costillas, hamburguesas, mazorcas. Música country.',note:null,season:'always'},
-    {name:"Jeremias' Food",park:'pa',zone:'Far West',tipo:'autoservicio',precio:'€€',cocina:'Pizza · pasta',desc:'Autoservicio ambientado en comedor de mineros. Pizza y pasta recién hechas, ensaladas. Menú infantil y sin gluten.',note:null,season:'always'},
-    {name:'La Cantina',park:'pa',zone:'México',tipo:'autoservicio',precio:'€€',cocina:'Mexicana',desc:'Uno de los mejores autoservicios del parque. Burritos, chile con carne, fajitas. Raciones muy abundantes.',note:null,season:'always'},
-    {name:'Cantón · Wok Noodles',park:'pa',zone:'China',tipo:'autoservicio',precio:'€€',cocina:'Asiática · wok',desc:'Autoservicio con showcooking de wok. Rollitos de primavera, fideos chinos, ensaladas.',note:null,season:'always'},
-    {name:'Sichuan',park:'pa',zone:'China',tipo:'autoservicio',precio:'€€',cocina:'China',desc:'Rollitos de primavera, brochetas, arroces y ensaladas. Menú infantil disponible.',note:null,season:'always'},
-    {name:'Marco Polo',park:'pa',zone:'China',tipo:'buffet',precio:'€€',cocina:'Internacional · buffet',desc:'Buffet libre con platos variados: asiáticos, pastas, carnes, pescados. Recomiendan reservar desde la app.',note:'⚠️ Solo abre en temporada alta (27 jun – 5 sep).',season:'summer'},
-    {name:'Bora Bora',park:'pa',zone:'Polynesia',tipo:'autoservicio',precio:'€€',cocina:'Poke bowls · saludable',desc:'Poke bowls, ensaladas, carnes y pescados al horno de carbón. Buena oferta vegetariana y vegana.',note:null,season:'always'},
-    {name:'La Cocina de Epi',park:'pa',zone:'SésamoAventura',tipo:'autoservicio',precio:'€€',cocina:'Variada · familiar',desc:'Pensado para familias con niños. Pizzas, pasta, hamburguesas, pollo. Mesas con vistas al escenario de Sésamo.',note:null,season:'always'},
-    {name:'Ristorante Cavallino',park:'ferrari',zone:'Ferrari Land',tipo:'carta',precio:'€€€',cocina:'Italiana',desc:'Restaurante de mesa de estilo italiano. Pizza, pasta y risotto. Ambiente inspirado en pilotos Ferrari.',note:null,season:'always'},
-    {name:'Ferrari Food',park:'ferrari',zone:'Ferrari Land',tipo:'autoservicio',precio:'€€',cocina:'Variada',desc:'Autoservicio rápido en Ferrari Land. Ensaladas, pizzas y pollo.',note:null,season:'always'},
+    {name:'Racó de Mar',park:'pa',zone:'Mediterrània',tipo:'carta',precio:'€€€',cocina:'Mediterránea',desc:'Carta mediterránea: arroces, pescados y carnes. Ambiente tranquilo.',note:null,season:'always'},
+    {name:'Vinosfera',park:'pa',zone:'Mediterrània',tipo:'carta',precio:'€€€',cocina:'Mediterránea · vinos',desc:'Especializado en vinos de la zona con cocina mediterránea.',note:null,season:'always'},
+    {name:'Long Branch Saloon',park:'pa',zone:'Far West',tipo:'carta',precio:'€€€',cocina:'Americana',desc:'Show de can-can incluido. Costillas, hamburguesas, steaks.',note:'⚠️ Requiere reserva el mismo día (gratis) y consumición mínima.',season:'always'},
+    {name:'The Iron Horse',park:'pa',zone:'Far West',tipo:'carta',precio:'€€€',cocina:'Americana',desc:'Costillas, hamburguesas. Se puede reservar.',note:null,season:'always'},
+    {name:'The Old Steak House',park:'pa',zone:'Far West',tipo:'autoservicio',precio:'€€',cocina:'Americana · carnes',desc:'Costillas, hamburguesas, mazorcas. Música country.',note:null,season:'always'},
+    {name:"Jeremias' Food",park:'pa',zone:'Far West',tipo:'autoservicio',precio:'€€',cocina:'Pizza · pasta',desc:'Pizza y pasta recién hechas. Menú infantil y sin gluten.',note:null,season:'always'},
+    {name:'La Cantina',park:'pa',zone:'México',tipo:'autoservicio',precio:'€€',cocina:'Mexicana',desc:'Burritos, chile con carne, fajitas. Raciones abundantes.',note:null,season:'always'},
+    {name:'Cantón · Wok Noodles',park:'pa',zone:'China',tipo:'autoservicio',precio:'€€',cocina:'Asiática · wok',desc:'Showcooking de wok. Rollitos, fideos chinos, ensaladas.',note:null,season:'always'},
+    {name:'Sichuan',park:'pa',zone:'China',tipo:'autoservicio',precio:'€€',cocina:'China',desc:'Rollitos, brochetas, arroces y ensaladas.',note:null,season:'always'},
+    {name:'Marco Polo',park:'pa',zone:'China',tipo:'buffet',precio:'€€',cocina:'Internacional · buffet',desc:'Buffet libre variado. Recomiendan reservar desde la app.',note:'⚠️ Solo en temporada alta (27 jun – 5 sep).',season:'summer'},
+    {name:'Bora Bora',park:'pa',zone:'Polynesia',tipo:'autoservicio',precio:'€€',cocina:'Poke bowls · saludable',desc:'Poke bowls, ensaladas. Buena oferta vegetariana.',note:null,season:'always'},
+    {name:'La Cocina de Epi',park:'pa',zone:'SésamoAventura',tipo:'autoservicio',precio:'€€',cocina:'Variada · familiar',desc:'Para familias con niños. Pizzas, pasta, hamburguesas.',note:null,season:'always'},
+    {name:'Ristorante Cavallino',park:'ferrari',zone:'Ferrari Land',tipo:'carta',precio:'€€€',cocina:'Italiana',desc:'Pizza, pasta y risotto. Ambiente Ferrari.',note:null,season:'always'},
+    {name:'Ferrari Food',park:'ferrari',zone:'Ferrari Land',tipo:'autoservicio',precio:'€€',cocina:'Variada',desc:'Ensaladas, pizzas y pollo. Opción rápida en Ferrari Land.',note:null,season:'always'},
   ];
 
   function renderRestaurants(date){
@@ -610,14 +776,16 @@
     const restPanel=document.getElementById('rest-panel'),restClosedMsg=document.getElementById('rest-closed-msg');
     if(isPaClosed(mmdd)){restPanel.style.display='none';restClosedMsg.style.display='block';return;}
     restPanel.style.display='block';restClosedMsg.style.display='none';
-    const season=getSeason(date),isSummer=season==='summer',ferrariOpen=isFerrariSeason(mmdd);
+    const season=getSeason(date),isSummer=season==='summer';
+    const day=date.getDay(),weekend=day===0||day===6,festivo=esFestivo(date),bloque=enBloqueFestivo(date);
+    const ferrariOpen=isFerrariOpen(mmdd,day,weekend,festivo,bloque);
     const avail=RESTAURANTS.filter(r=>{if(r.park==='ferrari'&&!ferrariOpen)return false;if(r.season==='summer'&&!isSummer)return false;return true;});
     const closed=RESTAURANTS.filter(r=>{if(r.park==='ferrari'&&!ferrariOpen)return true;if(r.season==='summer'&&!isSummer)return true;return false;});
-    const paRests=avail.filter(r=>r.park==='pa'),ferrariRests=avail.filter(r=>r.park==='ferrari');
+    const paR=avail.filter(r=>r.park==='pa'),flR=avail.filter(r=>r.park==='ferrari');
     let html='';
-    if(ferrariRests.length)html+='<div class="rest-park-header">PortAventura Park</div>';
-    paRests.forEach(r=>{html+=buildRestRow(r);});
-    if(ferrariRests.length){html+='<div class="rest-park-header">Ferrari Land</div>';ferrariRests.forEach(r=>{html+=buildRestRow(r);});}
+    if(flR.length)html+='<div class="rest-park-header">PortAventura Park</div>';
+    paR.forEach(r=>{html+=buildRestRow(r);});
+    if(flR.length){html+='<div class="rest-park-header">Ferrari Land</div>';flR.forEach(r=>{html+=buildRestRow(r);});}
     if(closed.length)html+='<div class="rest-closed-section"><div style="font-size:12px;color:var(--color-text-tertiary);margin-bottom:4px;">Cerrados hoy:</div><div style="font-size:12px;color:var(--color-text-tertiary);">'+closed.map(r=>r.name).join(' · ')+'</div></div>';
     const restList=document.getElementById('rest-list');
     restList.innerHTML=html;
@@ -629,297 +797,77 @@
     return'<div class="rest-row"><div class="rest-summary"><div class="rest-left"><div class="rest-name">'+r.name+'</div><div class="rest-meta">'+r.zone+' · '+r.cocina+'</div></div><div class="rest-right"><span class="rest-price">'+r.precio+'</span><span class="rest-chevron">▼</span></div></div><div class="rest-detail"><div>'+r.desc+'</div>'+(r.note?'<div class="rest-note">'+r.note+'</div>':'')+'<div style="margin-top:5px;font-size:11px;color:var(--color-text-tertiary);">'+tl+' · '+r.precio+' (orientativo)</div></div></div>';
   }
 
-  let rideHistory = {}; // { "pa-123": [t1, t2, t3] } últimas 3 lecturas
-
-  function updateHistory(parkKey, rides) {
-    rides.forEach(r => {
-      const key = parkKey + '-' + r.id;
-      if (!rideHistory[key]) rideHistory[key] = [];
-      if (r.is_open && (r.wait_time || 0) > 0) {
-        rideHistory[key].push(r.wait_time);
-        if (rideHistory[key].length > 3) rideHistory[key].shift();
-      }
-    });
+  // COMPARADOR
+  const cmpA=document.getElementById('cmp-date-a'),cmpB=document.getElementById('cmp-date-b');
+  const cmpCard=document.getElementById('cmp-card'),cmpClearBtn=document.getElementById('cmp-clear-btn');
+  cmpA.min=cmpB.min=todayIso;cmpA.max=cmpB.max=SEASON_END;
+  document.getElementById('cmp-toggle').addEventListener('click',e=>{if(e.target===cmpClearBtn||cmpClearBtn.contains(e.target))return;cmpCard.classList.toggle('open');});
+  cmpClearBtn.addEventListener('click',e=>{e.stopPropagation();cmpA.value='';cmpB.value='';document.getElementById('cmp-result').style.display='none';cmpClearBtn.style.display='none';});
+  function levelOrder(l){return l==='low'?0:l==='medium'?1:l==='high'?2:3;}
+  function buildCmpBox(dateStr,isWinner){
+    const date=new Date(dateStr+'T12:00:00'),est=getAffluence(date),hours=getHours(date),day=date.getDay();
+    if(est.level==='closed')return'<div class="cmp-box"><div class="cmp-box-date">'+formatDate(date)+'</div><div class="cmp-box-badge" style="background:var(--color-background-tertiary);color:var(--color-text-tertiary);">Cerrado</div><div class="cmp-box-detail">El parque no abre.</div></div>';
+    const bc={low:'background:#C0DD97;color:#27500A;',medium:'background:#FAC775;color:#633806;',high:'background:#F7C1C1;color:#791F1F;'};
+    const dn=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    let d='<span style="display:block;">🎢 PA: '+(hours.pa||'Cerrado')+'</span><span style="display:block;">🏎 Ferrari: '+(hours.ferrari||'Cerrado')+'</span>';
+    if(hours.caribe)d+='<span style="display:block;">🏊 Caribe: '+hours.caribe+'</span>';
+    d+='<span style="display:block;margin-top:4px;color:var(--color-text-tertiary);">'+est.reason+'</span>';
+    return'<div class="cmp-box'+(isWinner?' winner':'')+'">'+(isWinner?'<div class="cmp-winner-label">✓ Mejor opción</div>':'')+'<div class="cmp-box-date">'+dn[day]+' '+formatDate(date)+'</div><div class="cmp-box-badge" style="'+bc[est.level]+'">'+est.label+'</div><div class="cmp-box-detail">'+d+'</div></div>';
   }
-
-  function getTrend(parkKey, rideId) {
-    const key = parkKey + '-' + rideId;
-    const h = rideHistory[key];
-    if (!h || h.length < 2) return null;
-    const last = h[h.length - 1];
-    const prev = h[h.length - 2];
-    const diff = last - prev;
-    if (diff >= 5) return { arrow: '↑', color: '#791F1F', title: 'Cola subiendo' };
-    if (diff <= -5) return { arrow: '↓', color: '#27500A', title: 'Cola bajando' };
-    return { arrow: '→', color: 'var(--color-text-tertiary)', title: 'Cola estable' };
+  function formatDate(date){return date.getUTCDate()+'/'+(date.getUTCMonth()+1)+'/'+date.getUTCFullYear();}
+  function runComparator(){
+    const a=cmpA.value,b=cmpB.value,result=document.getElementById('cmp-result');
+    if(!a||!b||a===b){result.style.display='none';cmpClearBtn.style.display='none';return;}
+    const la=levelOrder(getAffluence(new Date(a+'T12:00:00')).level),lb=levelOrder(getAffluence(new Date(b+'T12:00:00')).level);
+    result.style.display='flex';result.innerHTML=buildCmpBox(a,la<lb)+buildCmpBox(b,lb<la);cmpClearBtn.style.display='inline';
   }
-  function waitClass(w){return w<=15?'wait-low':w<=35?'wait-med':'wait-high';}
-  function findRideById(pk,id){return(currentRides[pk]||[]).find(r=>r.id===id);}
+  cmpA.addEventListener('change',runComparator);cmpB.addEventListener('change',runComparator);
 
-  function getDisplayedRides(pk){
-    const all=currentRides[pk]||[];
-    let pool=mode==='mine'?all.filter(r=>new Set(favs.filter(f=>f.parkKey===pk).map(f=>f.rideId)).has(r.id)):all.slice();
-    pool.sort((a,b)=>{const cat=r=>!r.is_open?2:(r.wait_time||0)>0?0:1;const ca=cat(a),cb=cat(b);if(ca!==cb)return ca-cb;if(ca===0)return(a.wait_time||0)-(b.wait_time||0);return(a.name||'').localeCompare(b.name||'','es');});
-    return pool;
-  }
-
-  function renderRideRow(r, parkKey){
-    const w=r.wait_time||0;
-    let pc,pv;
-    if(!r.is_open){pc='wait-closed';pv='Sin datos';}
-    else if(w>0){pc=waitClass(w);pv=w+' min';}
-    else{pc='wait-closed';pv='— min';}
-    const trend = (r.is_open && w > 0) ? getTrend(parkKey, r.id) : null;
-    const trendHtml = trend
-      ? '<span title="'+trend.title+'" style="font-size:12px;color:'+trend.color+';margin-left:4px;font-weight:600;">'+trend.arrow+'</span>'
-      : '';
-    const zoneHtml = r.landName
-      ? '<div style="font-size:11px;color:var(--color-text-tertiary);margin-top:1px;">'+r.landName+'</div>'
-      : '';
-    const photo = getRidePhoto(r.name);
-    const photoId = 'photo-'+parkKey+'-'+r.id;
-    const photoHtml = photo
-      ? '<div id="'+photoId+'" style="display:none;margin-top:8px;">' +
-        '<img src="'+photo+'" alt="'+r.name+'" style="width:100%;max-height:160px;object-fit:cover;border-radius:6px;" ' +
-        'onerror="this.parentElement.style.display=\'none\'">' +
-        '<div style="font-size:10px;color:var(--color-text-tertiary);margin-top:3px;">Foto: Wikimedia Commons · CC</div>' +
-        '</div>'
-      : '';
-    const clickable = photo
-      ? 'style="cursor:pointer;" onclick="(function(){var el=document.getElementById(\''+photoId+'\');el.style.display=el.style.display===\'none\'?\'block\':\'none\';})()"'
-      : '';
-    return '<div class="ride-row '+(r.is_open&&w>0?'':'ride-disabled')+'">' +
-      '<div style="flex:1;min-width:0;">' +
-        '<div class="ride-name" '+clickable+'>'+r.name+(photo?'<span style="font-size:10px;color:var(--color-text-tertiary);margin-left:5px;">📷</span>':'')+trendHtml+'</div>' +
-        zoneHtml +
-        photoHtml +
-      '</div>' +
-      '<div class="wait-pill '+pc+'" style="margin-left:10px;flex-shrink:0;">'+pv+'</div>' +
-    '</div>';
-  }
-
-  function renderNow(){
-    const nowList=document.getElementById('now-list'),subtitle=document.getElementById('now-card-subtitle');
-    document.getElementById('mode-mine').classList.toggle('active',mode==='mine');
-    document.getElementById('mode-all').classList.toggle('active',mode==='all');
-    const date=new Date(dateInput.value+'T12:00:00'),mmdd=date.toISOString().slice(5,10),hours=getHours(date),isToday=dateInput.value===todayIso;
-    const showPa=isToday&&!isPaClosed(mmdd)&&isParkOpenNow(hours.pa),showFerrari=isToday&&isFerrariSeason(mmdd)&&isParkOpenNow(hours.ferrari);
-    let html='';
-    if(mode==='mine'&&favs.length===0){
-      subtitle.textContent='Tu lista personal de atracciones';
-      html='<div class="empty-state">Aún no has elegido tus atracciones.<br>Selecciónalas (hasta '+FAVS_LIMIT+') para verlas aquí ordenadas por cola.<br><button id="empty-edit-btn">Elegir mis atracciones</button></div>';
-      nowList.innerHTML=html;document.getElementById('empty-edit-btn').addEventListener('click',openEditModal);return;
-    }
-    subtitle.textContent=mode==='mine'?'Tus atracciones, ordenadas por cola':'Todas las atracciones, ordenadas por cola';
-    [['pa',showPa],['ferrari',showFerrari]].forEach(([pk,show])=>{
-      if(!show)return;
-      const rides=getDisplayedRides(pk),status=fetchStatus[pk];
-      html+='<div class="now-park-header"><span>'+PARKS[pk].label+'</span><button class="edit-link" data-edit-from="'+pk+'">Editar mis atracciones</button></div>';
-      if(status==='error')html+='<div class="empty-state" style="text-align:left;">No se han podido cargar los datos. Comprueba tu conexión.</div>';
-      else if(status==='pending'||!currentRides[pk].length)html+='<div class="empty-state" style="text-align:left;">'+(status==='pending'?'Cargando tiempos...':'Sin datos reportados ahora mismo.')+'</div>';
-      else if(mode==='mine'&&rides.length===0)html+='<div class="empty-state" style="text-align:left;">No tienes atracciones de este parque en tus favoritas.</div>';
-      else html+=rides.map(r=>renderRideRow(r,pk)).join('');
-    });
-    if(!html){nowList.innerHTML='<div class="empty-state">Ningún parque está abierto en este momento.</div>';return;}
-    nowList.innerHTML=html;
-    nowList.querySelectorAll('[data-edit-from]').forEach(btn=>btn.addEventListener('click',openEditModal));
-  }
-
-  document.getElementById('mode-mine').addEventListener('click',()=>{if(mode==='mine')return;mode='mine';lsSet(SK.mode,mode);renderNow();});
-  document.getElementById('mode-all').addEventListener('click',()=>{if(mode==='all')return;mode='all';lsSet(SK.mode,mode);renderNow();});
-
-  // === MODAL FAVORITAS ===
-  let editSelection=[];
-  function openEditModal(){editSelection=favs.map(f=>({parkKey:f.parkKey,rideId:f.rideId}));renderEditModal();document.getElementById('edit-modal').style.display='flex';}
-  function closeEditModal(){document.getElementById('edit-modal').style.display='none';}
-  function isSel(pk,id){return editSelection.some(f=>f.parkKey===pk&&f.rideId===id);}
-  function toggleFav(pk,id){
-    const w=document.getElementById('edit-limit-warning'),idx=editSelection.findIndex(f=>f.parkKey===pk&&f.rideId===id);
-    if(idx>=0){editSelection.splice(idx,1);w.classList.add('hidden');}
-    else{if(editSelection.length>=FAVS_LIMIT){w.classList.remove('hidden');return;}editSelection.push({parkKey:pk,rideId:id});w.classList.add('hidden');}
-    document.getElementById('edit-counter').textContent=editSelection.length+' / '+FAVS_LIMIT+' seleccionadas';
-    const rowEl=document.querySelector('.edit-row[data-park="'+pk+'"][data-ride="'+id+'"]');
-    if(rowEl){const ns=isSel(pk,id);rowEl.classList.toggle('at-limit',!ns&&editSelection.length>=FAVS_LIMIT);const ch=rowEl.querySelector('.edit-check');if(ch)ch.classList.toggle('checked',ns);}
-    document.querySelectorAll('.edit-row').forEach(row=>{const p=row.dataset.park,r=parseInt(row.dataset.ride,10);row.classList.toggle('at-limit',editSelection.length>=FAVS_LIMIT&&!isSel(p,r));});
-  }
-  function renderEditModal(){
-    document.getElementById('edit-counter').textContent=editSelection.length+' / '+FAVS_LIMIT+' seleccionadas';
-    const listEl=document.getElementById('edit-modal-list');
-    let html='',any=false;
-    Object.keys(PARKS).forEach(pk=>{
-      const rides=(currentRides[pk]||[]).slice().sort((a,b)=>{const at=isTopRide(pk,a.name)?0:1,bt=isTopRide(pk,b.name)?0:1;return at!==bt?at-bt:(a.name||'').localeCompare(b.name||'','es');});
-      if(!rides.length)return;any=true;
-      html+='<div class="edit-park-header">'+PARKS[pk].label+'</div>';
-      rides.forEach(r=>{const sel=isSel(pk,r.id),al=!sel&&editSelection.length>=FAVS_LIMIT,top=isTopRide(pk,r.name);html+='<div class="edit-row'+(al?' at-limit':'')+'" data-park="'+pk+'" data-ride="'+r.id+'"><div class="edit-check'+(sel?' checked':'')+'"></div><div class="edit-row-label">'+r.name+(top?' <span class="star">★</span>':'')+'</div></div>';});
-    });
-    if(!any)html='<div class="empty-state" style="padding:30px 0;">No hay atracciones cargadas todavía.</div>';
-    listEl.innerHTML=html;
-    const newList=listEl.cloneNode(true);listEl.parentNode.replaceChild(newList,listEl);
-    newList.addEventListener('click',e=>{const row=e.target.closest('.edit-row');if(!row)return;const pk=row.dataset.park,rid=parseInt(row.dataset.ride,10);if(!pk||isNaN(rid))return;if(row.classList.contains('at-limit')&&!isSel(pk,rid))return;toggleFav(pk,rid);});
-  }
-  document.getElementById('edit-modal-cancel').addEventListener('click',closeEditModal);
-  document.getElementById('edit-modal-save').addEventListener('click',()=>{favs=editSelection.slice();lsSetJson(SK.favs,favs);closeEditModal();renderNow();populateAlertSelect();});
-  document.getElementById('edit-modal').addEventListener('click',e=>{if(e.target.id==='edit-modal')closeEditModal();});
-
-  // === ALERTAS ===
-  const alertSel=document.getElementById('alert-ride');
-  function populateAlertSelect(){
-    alertSel.innerHTML='';
-    const total=(currentRides.pa||[]).length+(currentRides.ferrari||[]).length;
-    if(!total){const o=document.createElement('option');o.value='';o.textContent='Esperando datos en vivo...';alertSel.appendChild(o);return;}
-    const fi={pa:new Set(favs.filter(f=>f.parkKey==='pa').map(f=>f.rideId)),ferrari:new Set(favs.filter(f=>f.parkKey==='ferrari').map(f=>f.rideId))};
-    Object.keys(PARKS).forEach(pk=>{
-      const rides=currentRides[pk]||[];if(!rides.length)return;
-      const fav=rides.filter(r=>fi[pk].has(r.id)),oth=rides.filter(r=>!fi[pk].has(r.id));
-      if(fav.length){const g=document.createElement('optgroup');g.label=PARKS[pk].label+' · Mis favoritas';fav.sort((a,b)=>(a.name||'').localeCompare(b.name||'','es')).forEach(r=>{const o=document.createElement('option');o.value=pk+'|'+r.id;o.textContent=r.name;g.appendChild(o);});alertSel.appendChild(g);}
-      if(oth.length){const g=document.createElement('optgroup');g.label=PARKS[pk].label+(fav.length?' · Otras':'');oth.sort((a,b)=>(a.name||'').localeCompare(b.name||'','es')).forEach(r=>{const o=document.createElement('option');o.value=pk+'|'+r.id;o.textContent=r.name;g.appendChild(o);});alertSel.appendChild(g);}
-    });
-  }
-  function renderAlerts(){
-    const list=document.getElementById('alerts-list');
-    if(!alerts.length){list.innerHTML='<div style="font-size:13px;color:var(--color-text-tertiary);padding:8px 0;">Aún no has creado ninguna alerta.</div>';return;}
-    const now=Date.now();let changed=false;
-    list.innerHTML=alerts.map(a=>{
-      if(a.state==='snoozed'&&now>=a.snoozeUntil){a.state='armed';a.snoozeUntil=0;changed=true;}
-      const ride=findRideById(a.parkKey,a.rideId);let sh,fired=false;
-      if(!ride)sh='<span style="color:var(--color-text-tertiary);font-size:13px;">Sin datos</span>';
-      else if(!ride.is_open)sh='<span style="color:var(--color-text-secondary);font-size:13px;">Sin datos</span>';
-      else{const w=ride.wait_time||0,c=w>0&&w<=a.threshold;if(c&&a.state==='armed'){a.state='fired';changed=true;enqueueAlert(a,w);fired=true;sh='<span style="color:#27500A;font-weight:500;font-size:14px;">¡'+w+' min ahora!</span>';}else if(c&&a.state==='fired'){fired=true;sh='<span style="color:#27500A;font-weight:500;font-size:14px;">¡'+w+' min ahora!</span>';}else if(a.state==='snoozed'){const mr=Math.max(1,Math.ceil((a.snoozeUntil-now)/60000));sh='<span style="color:var(--color-text-tertiary);font-size:13px;">'+w+' min · silenciada '+mr+' min</span>';}else sh='<span style="color:var(--color-text-secondary);font-size:13px;">'+w+' min</span>';}
-      return'<div class="alert-row '+(fired?'alert-fired':'')+'"><div><div style="font-size:14px;">'+a.name+'</div><div style="font-size:12px;color:var(--color-text-secondary);">'+(PARKS[a.parkKey]?PARKS[a.parkKey].label:'')+' · avisar cuando ≤ '+a.threshold+' min</div></div><div style="display:flex;gap:10px;align-items:center;">'+sh+'<button class="x-btn" data-alert-id="'+a.id+'">×</button></div></div>';
-    }).join('');
-    if(changed)lsSetJson(SK.alerts,alerts);
-    list.querySelectorAll('[data-alert-id]').forEach(btn=>btn.addEventListener('click',()=>{alerts=alerts.filter(a=>a.id!==parseInt(btn.dataset.alertId,10));lsSetJson(SK.alerts,alerts);renderAlerts();}));
-  }
-  function addAlert(){
-    const val=alertSel.value;if(!val||!val.includes('|'))return;
-    const[pk,rs]=val.split('|'),rideId=parseInt(rs,10);if(!PARKS[pk]||isNaN(rideId))return;
-    const ride=findRideById(pk,rideId);if(!ride)return;
-    const threshold=parseInt(document.getElementById('alert-threshold').value,10)||20;
-    alerts=alerts.filter(a=>!(a.parkKey===pk&&a.rideId===rideId));
-    alerts.push({id:Date.now(),parkKey:pk,rideId,name:ride.name,threshold,state:'armed',snoozeUntil:0});
-    lsSetJson(SK.alerts,alerts);renderAlerts();
-  }
-
-  // === COMPARADOR DE FECHAS ===
-  const cmpA = document.getElementById('cmp-date-a');
-  const cmpB = document.getElementById('cmp-date-b');
-  const cmpCard = document.getElementById('cmp-card');
-  const cmpClearBtn = document.getElementById('cmp-clear-btn');
-  cmpA.min = cmpB.min = todayIso;
-  cmpA.max = cmpB.max = SEASON_END;
-
-  // Toggle colapsable
-  document.getElementById('cmp-toggle').addEventListener('click', e => {
-    if (e.target === cmpClearBtn || cmpClearBtn.contains(e.target)) return;
-    cmpCard.classList.toggle('open');
-  });
-
-  // Borrar
-  cmpClearBtn.addEventListener('click', e => {
-    e.stopPropagation();
-    cmpA.value = ''; cmpB.value = '';
-    document.getElementById('cmp-result').style.display = 'none';
-    cmpClearBtn.style.display = 'none';
-  });
-
-  function levelOrder(level){ return level==='low'?0:level==='medium'?1:level==='high'?2:3; }
-
-  function buildCmpBox(dateStr, isWinner) {
-    const date = new Date(dateStr+'T12:00:00');
-    const est = getAffluence(date);
-    const hours = getHours(date);
-    const day = date.getDay();
-    if (est.level === 'closed') {
-      return '<div class="cmp-box"><div class="cmp-box-date">'+formatDate(date)+'</div>' +
-        '<div class="cmp-box-badge" style="background:var(--color-background-tertiary);color:var(--color-text-tertiary);">Cerrado</div>' +
-        '<div class="cmp-box-detail">El parque no abre este día.</div></div>';
-    }
-    const badgeColors = {low:'background:#C0DD97;color:#27500A;',medium:'background:#FAC775;color:#633806;',high:'background:#F7C1C1;color:#791F1F;'};
-    const dayNames = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    let detail = '';
-    detail += '<span style="display:block;">🎢 PA: '+(hours.pa||'Cerrado')+'</span>';
-    detail += '<span style="display:block;">🏎 Ferrari: '+(hours.ferrari||'Cerrado')+'</span>';
-    if (hours.caribe) detail += '<span style="display:block;">🏊 Caribe: '+hours.caribe+'</span>';
-    detail += '<span style="display:block;margin-top:4px;color:var(--color-text-tertiary);">'+est.reason+'</span>';
-    return '<div class="cmp-box'+(isWinner?' winner':'')+'">' +
-      (isWinner?'<div class="cmp-winner-label">✓ Mejor opción</div>':'') +
-      '<div class="cmp-box-date">'+dayNames[day]+' '+formatDate(date)+'</div>' +
-      '<div class="cmp-box-badge" style="'+badgeColors[est.level]+'">'+est.label+'</div>' +
-      '<div class="cmp-box-detail">'+detail+'</div></div>';
-  }
-
-  function formatDate(date) {
-    return date.getUTCDate()+'/'+(date.getUTCMonth()+1)+'/'+date.getUTCFullYear();
-  }
-
-  function runComparator() {
-    const a = cmpA.value, b = cmpB.value;
-    const result = document.getElementById('cmp-result');
-    if (!a || !b || a === b) { result.style.display='none'; cmpClearBtn.style.display='none'; return; }
-    const estA = getAffluence(new Date(a+'T12:00:00'));
-    const estB = getAffluence(new Date(b+'T12:00:00'));
-    const la = levelOrder(estA.level), lb = levelOrder(estB.level);
-    result.style.display = 'flex';
-    result.innerHTML = buildCmpBox(a, la < lb) + buildCmpBox(b, lb < la);
-    cmpClearBtn.style.display = 'inline';
-  }
-
-  cmpA.addEventListener('change', runComparator);
-  cmpB.addEventListener('change', runComparator);
-
-  // Botón actualizar ahora
-  document.getElementById('refresh-btn').addEventListener('click', async () => {
-    const btn = document.getElementById('refresh-btn');
-    btn.textContent = '↻ Actualizando...';
-    btn.disabled = true;
-    await fetchLive();
-    btn.textContent = '↻ Actualizar ahora';
-    btn.disabled = false;
-  });
-
-  // === FETCH ===
+  // FETCH DATOS EN VIVO
   async function fetchPark(pk){
     try{
       const res=await fetch(PROXY_BASE+'/'+pk);if(!res.ok)throw new Error();
       const data=await res.json(),rides=[];
-      (data.lands||[]).forEach(l=>(l.rides||[]).forEach(r=>rides.push({...r, landName: l.name})));
+      (data.lands||[]).forEach(l=>(l.rides||[]).forEach(r=>rides.push({...r,landName:l.name})));
       (data.rides||[]).forEach(r=>rides.push(r));
-      updateHistory(pk, rides);
-      currentRides[pk]=rides;fetchStatus[pk]='ok';
-    }
-    catch(e){currentRides[pk]=[];fetchStatus[pk]='error';}
+      // Mapear por nombre a nuestros IDs hardcodeados
+      const allRides=pk==='pa'?RIDES_PA:RIDES_FERRARI;
+      rides.forEach(r=>{
+        const match=allRides.find(a=>r.name&&r.name.toLowerCase().includes(a.id.replace(/_/g,' ')));
+        if(match){
+          liveData[match.id]={wait_time:r.wait_time,is_open:r.is_open};
+          if(!rideHistory[match.id])rideHistory[match.id]=[];
+          if(r.is_open&&(r.wait_time||0)>0){rideHistory[match.id].push(r.wait_time);if(rideHistory[match.id].length>3)rideHistory[match.id].shift();}
+        }
+      });
+      fetchStatus[pk]='ok';
+    }catch(e){fetchStatus[pk]='error';}
   }
 
-  function recalcLiveVisibility(){
-    const date=new Date(dateInput.value+'T12:00:00'),mmdd=date.toISOString().slice(5,10),hours=getHours(date),isToday=dateInput.value===todayIso;
-    const paOpenNow=isToday&&!isPaClosed(mmdd)&&isParkOpenNow(hours.pa),ferrariOpenNow=isToday&&isFerrariSeason(mmdd)&&isParkOpenNow(hours.ferrari),anyOpen=paOpenNow||ferrariOpenNow;
-    document.getElementById('now-card').style.display=anyOpen?'block':'none';
-    document.getElementById('alert-card').style.display=anyOpen?'block':'none';
-    document.getElementById('now-offline-msg').style.display=anyOpen?'none':'block';
-
-    // Aviso estacional
-    const warning = getSeasonWarning(date);
-    let warnEl = document.getElementById('season-warning');
-    if (!warnEl) {
-      warnEl = document.createElement('div');
-      warnEl.id = 'season-warning';
-      warnEl.style.cssText = 'font-size:12px;color:var(--color-text-warning);background:var(--color-background-warning);padding:10px 12px;border-radius:var(--border-radius-md);margin-bottom:1rem;line-height:1.5;';
-      document.getElementById('tab-atracciones').prepend(warnEl);
-    }
-    warnEl.textContent = warning || '';
-    warnEl.style.display = warning ? 'block' : 'none';
-
-    return{paOpenNow,ferrariOpenNow};
+  function recalcLive(){
+    const date=new Date(dateInput.value+'T12:00:00'),mmdd=date.toISOString().slice(5,10);
+    const hours=getHours(date),isToday=dateInput.value===todayIso;
+    const paOpen=isToday&&!isPaClosed(mmdd)&&isParkOpenNow(hours.pa);
+    const flOpen=isToday&&isParkOpenNow(hours.ferrari);
+    const anyOpen=paOpen||flOpen;
+    document.getElementById('live-status').style.display=anyOpen?'flex':'none';
+    document.getElementById('alert-section').style.display=anyOpen?'block':'none';
+    return{paOpen,flOpen,anyOpen};
   }
 
   async function fetchLive(){
-    const{paOpenNow,ferrariOpenNow}=recalcLiveVisibility();
-    if(!paOpenNow&&!ferrariOpenNow){stopPolling();return;}
-    const tasks=[];if(paOpenNow)tasks.push(fetchPark('pa'));if(ferrariOpenNow)tasks.push(fetchPark('ferrari'));
-    await Promise.all(tasks);
-    renderNow();populateAlertSelect();renderAlerts();
-    document.getElementById('now-last-check').textContent='Última actualización: '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+    const{paOpen,flOpen,anyOpen}=recalcLive();
+    if(!anyOpen){stopPolling();return;}
+    if(paOpen)await fetchPark('pa');
+    if(flOpen)await fetchPark('ferrari');
+    renderRideList();renderAlerts();
+    document.getElementById('now-last-check').textContent='Actualizado: '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
   }
+
+  document.getElementById('refresh-btn').addEventListener('click',async()=>{
+    const btn=document.getElementById('refresh-btn');btn.textContent='↻ Actualizando...';btn.disabled=true;
+    await fetchLive();btn.textContent='↻ Actualizar';btn.disabled=false;
+  });
 
   function startPolling(){if(pollTimer)clearInterval(pollTimer);pollTimer=setInterval(fetchLive,180000);}
   function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null;}}
@@ -935,11 +883,19 @@
     else{badge.style.background='var(--color-background-primary)';badge.style.color='var(--color-text-secondary)';badge.style.border='0.5px solid var(--color-border-tertiary)';}
     document.getElementById('affluence-reason').textContent=est.reason;
     document.getElementById('parks-status').innerHTML=[{name:'PortAventura Park',hours:hours.pa},{name:'Ferrari Land',hours:hours.ferrari},{name:'Costa Caribe Aquatic Park',hours:hours.caribe}].map(p=>'<div class="park-row"><div class="park-name">'+p.name+'</div><div class="park-meta"><span class="dot '+(p.hours?'dot-open':'dot-closed')+'"></span>'+(p.hours||'Cerrado')+'</div></div>').join('');
+
+    // Aviso estacional
+    const sw=getSeasonWarning(date);
+    const swEl=document.getElementById('season-warning');
+    swEl.textContent=sw||'';swEl.style.display=sw?'block':'none';
+
+    renderRideList();
     renderShows(date);
     renderRestaurants(date);
     fetchWeather(dateInput.value);
-    const{paOpenNow,ferrariOpenNow}=recalcLiveVisibility();
-    if(paOpenNow||ferrariOpenNow){fetchLive();startPolling();}else{stopPolling();}
+
+    const{anyOpen}=recalcLive();
+    if(anyOpen){fetchLive();startPolling();}else{stopPolling();}
   }
 
   dateInput.addEventListener('change',render);
