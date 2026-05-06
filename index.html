@@ -658,7 +658,8 @@
   document.getElementById('mode-mine').addEventListener('click',()=>{if(mode==='mine')return;mode='mine';lsSet(SK.mode,mode);document.getElementById('mode-mine').classList.add('active');document.getElementById('mode-all').classList.remove('active');renderRideList();});
   document.getElementById('mode-all').addEventListener('click',()=>{if(mode==='all')return;mode='all';lsSet(SK.mode,mode);document.getElementById('mode-all').classList.add('active');document.getElementById('mode-mine').classList.remove('active');renderRideList();});
 
-  // MODAL FAVORITAS
+  // Exponer openEditModal globalmente para el onclick del HTML
+  window.openEditModal = openEditModal;
   let editSelection=[];
   function openEditModal(){editSelection=favs.map(f=>({rideId:f.rideId}));renderEditModal();document.getElementById('edit-modal').style.display='flex';}
   function closeEditModal(){document.getElementById('edit-modal').style.display='none';}
