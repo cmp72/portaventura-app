@@ -312,7 +312,7 @@
 </div>
 
 <div class="footer">
-  Tiempos reales vía <a href="https://queue-times.com" target="_blank">Powered by Queue-Times.com</a> · Datos meteorológicos: AEMET · Temporada 2026
+  Datos meteorológicos: AEMET · Temporada 2026 · Información no oficial
 </div>
 
 </div>
@@ -397,10 +397,7 @@
     {id:'racing_legends', name:'Racing Legends', zone:'Ferrari Land', top:false, url:'racing-legends', single:null, desc:'Simulador 4D de Fórmula 1. Experiencia de piloto sin límite de edad.'},
   ];
 
-  let liveData={}; // { rideId: {wait_time, is_open, trend} }
-  let rideHistory={};
   let pollTimer=null;
-  let fetchStatus={pa:'idle',ferrari:'idle'};
 
   const SK={date:'pa-app-date',alerts:'pa-app-alerts',favs:'pa-app-favs',mode:'pa-app-mode',tab:'pa-app-tab'};
   const FAVS_LIMIT=10;
@@ -546,31 +543,17 @@
     return{arrow:'→',color:'var(--color-text-tertiary)',title:'Cola estable'};
   }
 
-  function buildRideRow(ride, parkKey){
-    const live=liveData[ride.id];
-    const haslive=!!live;
-    let pillHtml='';
-    if(haslive){
-      const w=live.wait_time||0;
-      let pc,pv;
-      if(!live.is_open){pc='wait-closed';pv='Sin datos';}
-      else if(w>0){pc=waitClass(w);pv=w+' min';}
-      else{pc='wait-closed';pv='— min';}
-      const trend=getTrend(ride.id);
-      const trendHtml=trend?'<span class="trend" style="color:'+trend.color+'" title="'+trend.title+'">'+trend.arrow+'</span>':'';
-      pillHtml='<div class="wait-pill '+pc+'">'+pv+trendHtml+'</div>';
-    }
-
+  function buildRideRow(ride){
+    const photo=null; // fotos desactivadas por ahora
     return '<div class="ride-row" onclick="this.classList.toggle(\'open\')">' +
       '<div class="ride-left">' +
-        '<div class="ride-name'+(ride.top?' top':'')+'">'+(haslive?'<span class="live-badge">EN VIVO</span> ':'')+ride.name+'</div>'+
+        '<div class="ride-name'+(ride.top?' top':'')+'">'+ride.name+'</div>'+
         '<div class="ride-zone">'+ride.zone+'</div>'+
         '<div class="ride-desc">'+ride.desc+
         (ride.single?'<div style="margin-top:4px;font-size:12px;color:var(--color-text-secondary);">'+ride.single+'</div>':'')+
-        (ride.url?'<div style="margin-top:6px;"><a href="https://www.portaventuraworld.com/atracciones/'+ride.url+'" target="_blank" style="font-size:12px;color:var(--color-accent);text-decoration:none;">Ver en web oficial →</a></div>':'')+
         '</div>'+
       '</div>'+
-      '<div class="ride-right">'+pillHtml+'</div>'+
+      '<div class="ride-right"></div>'+
     '</div>';
   }
 
@@ -790,54 +773,7 @@
   }
   cmpA.addEventListener('change',runComparator);cmpB.addEventListener('change',runComparator);
 
-  // FETCH DATOS EN VIVO
-  async function fetchPark(pk){
-    try{
-      const res=await fetch(PROXY_BASE+'/'+pk);if(!res.ok)throw new Error();
-      const data=await res.json(),rides=[];
-      (data.lands||[]).forEach(l=>(l.rides||[]).forEach(r=>rides.push({...r,landName:l.name})));
-      (data.rides||[]).forEach(r=>rides.push(r));
-      // Mapear por nombre a nuestros IDs hardcodeados
-      const allRides=pk==='pa'?RIDES_PA:RIDES_FERRARI;
-      rides.forEach(r=>{
-        const match=allRides.find(a=>r.name&&r.name.toLowerCase().includes(a.id.replace(/_/g,' ')));
-        if(match){
-          liveData[match.id]={wait_time:r.wait_time,is_open:r.is_open};
-          if(!rideHistory[match.id])rideHistory[match.id]=[];
-          if(r.is_open&&(r.wait_time||0)>0){rideHistory[match.id].push(r.wait_time);if(rideHistory[match.id].length>3)rideHistory[match.id].shift();}
-        }
-      });
-      fetchStatus[pk]='ok';
-    }catch(e){fetchStatus[pk]='error';}
-  }
-
-  function recalcLive(){
-    const date=new Date(dateInput.value+'T12:00:00'),mmdd=date.toISOString().slice(5,10);
-    const hours=getHours(date),isToday=dateInput.value===todayIso;
-    const paOpen=isToday&&!isPaClosed(mmdd)&&isParkOpenNow(hours.pa);
-    const flOpen=isToday&&isParkOpenNow(hours.ferrari);
-    const anyOpen=paOpen||flOpen;
-    document.getElementById('live-status').style.display=anyOpen?'flex':'none';
-    document.getElementById('alert-section').style.display=anyOpen?'block':'none';
-    return{paOpen,flOpen,anyOpen};
-  }
-
-  async function fetchLive(){
-    const{paOpen,flOpen,anyOpen}=recalcLive();
-    if(!anyOpen){stopPolling();return;}
-    if(paOpen)await fetchPark('pa');
-    if(flOpen)await fetchPark('ferrari');
-    renderRideList();renderAlerts();
-    document.getElementById('now-last-check').textContent='Actualizado: '+new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
-  }
-
-  document.getElementById('refresh-btn').addEventListener('click',async()=>{
-    const btn=document.getElementById('refresh-btn');btn.textContent='↻ Actualizando...';btn.disabled=true;
-    await fetchLive();btn.textContent='↻ Actualizar';btn.disabled=false;
-  });
-
-  function startPolling(){if(pollTimer)clearInterval(pollTimer);pollTimer=setInterval(fetchLive,180000);}
-  function stopPolling(){if(pollTimer){clearInterval(pollTimer);pollTimer=null;}}
+  // FETCH Y POLLING ELIMINADOS — sin tiempos en vivo
 
   function render(){
     validateDate();lsSet(SK.date,dateInput.value);
@@ -851,17 +787,14 @@
     document.getElementById('affluence-reason').textContent=est.reason;
     document.getElementById('parks-status').innerHTML=[{name:'PortAventura Park',hours:hours.pa},{name:'Ferrari Land',hours:hours.ferrari},{name:'Costa Caribe Aquatic Park',hours:hours.caribe}].map(p=>'<div class="park-row"><div class="park-name">'+p.name+'</div><div class="park-meta"><span class="dot '+(p.hours?'dot-open':'dot-closed')+'"></span>'+(p.hours||'Cerrado')+'</div></div>').join('');
 
-    // Aviso estacional
-    const sw=getSeasonWarning(date);
-    const swEl=document.getElementById('season-warning');
-    swEl.textContent=sw||'';swEl.style.display=sw?'block':'none';
-
     renderRideList();
     renderShows(date);
     renderRestaurants(date);
 
-    const{anyOpen}=recalcLive();
-    if(anyOpen){fetchLive();startPolling();}else{stopPolling();}
+    // Aviso estacional
+    const sw=getSeasonWarning(date);
+    const swEl=document.getElementById('season-warning');
+    swEl.textContent=sw||'';swEl.style.display=sw?'block':'none';
   }
 
   dateInput.addEventListener('change',render);
