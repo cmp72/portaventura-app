@@ -164,7 +164,17 @@
   .mode-toggle button { flex: 1; height: 32px; padding: 4px 10px; background: transparent; border: none; font-size: 13px; border-radius: 6px; color: var(--color-text-secondary); }
   .mode-toggle button.active { background: var(--color-background-primary); color: var(--color-text-primary); box-shadow: 0 1px 2px rgba(0,0,0,0.08); }
 
-  /* BOTÓN APP OFICIAL */
+  /* TIPS */
+  .tips-card { background: var(--color-background-primary); border-radius: var(--border-radius-lg); border: 0.5px solid var(--color-border-tertiary); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .tips-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; user-select: none; }
+  .tips-title { font-size: 16px; font-weight: 500; }
+  .tips-chevron { font-size: 11px; color: var(--color-text-tertiary); transition: transform 0.2s; }
+  .tips-card.open .tips-chevron { transform: rotate(180deg); }
+  .tips-body { display: none; margin-top: 12px; }
+  .tips-card.open .tips-body { display: block; }
+  .tip-row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--color-border-tertiary); font-size: 13px; line-height: 1.5; }
+  .tip-row:last-child { border-bottom: none; }
+  .tip-num { font-size: 12px; font-weight: 600; color: var(--color-accent); flex-shrink: 0; min-width: 20px; }
   .official-app-btn { display: flex; align-items: center; justify-content: center; gap: 10px; background: var(--color-accent); color: white; border-radius: var(--border-radius-lg); padding: 14px 20px; margin-bottom: 1rem; text-decoration: none; font-size: 15px; font-weight: 500; }
   .official-app-btn:hover { opacity: 0.9; }
 </style>
@@ -201,6 +211,28 @@
 <div class="card">
   <div class="section-label">Estado y horarios</div>
   <div id="parks-status"></div>
+</div>
+
+<!-- TIPS -->
+<div class="tips-card" id="tips-card">
+  <div class="tips-header" id="tips-toggle">
+    <div class="tips-title">💡 Consejos para tu visita</div>
+    <span class="tips-chevron">▼</span>
+  </div>
+  <div class="tips-body">
+    <div class="tip-row"><span class="tip-num">1</span><span>Llega 15-20 min antes de la apertura. Entrar entre los primeros marca la diferencia, especialmente para las atracciones de China.</span></div>
+    <div class="tip-row"><span class="tip-num">2</span><span>Empieza por China — Shambhala y Dragon Khan están al fondo del parque. La mayoría va primero a las atracciones de la entrada, así que China está más tranquila nada al abrir.</span></div>
+    <div class="tip-row"><span class="tip-num">3</span><span>Evita comer entre las 13:00 y las 15:00 — es el pico en todos los restaurantes. Come antes o después y aprovecha ese rato para hacer atracciones.</span></div>
+    <div class="tip-row"><span class="tip-num">4</span><span>Las atracciones de agua tienen menos cola por la mañana. Si quieres mojarte, ve a primera hora. Por la tarde la cola se dispara.</span></div>
+    <div class="tip-row"><span class="tip-num">5</span><span>El pase Express no siempre vale la pena — mira primero cómo van las colas. En días de baja afluencia puede no ser necesario.</span></div>
+    <div class="tip-row"><span class="tip-num">6</span><span>Con lluvia las colas bajan. Si llueve, las atracciones cubiertas tienen menos espera. Lleva chubasquero y aprovecha.</span></div>
+    <div class="tip-row"><span class="tip-num">7</span><span>El tren de vapor conecta las zonas — útil para moverse sin caminar, especialmente con niños o al final del día cuando ya estás cansado.</span></div>
+    <div class="tip-row"><span class="tip-num">8</span><span>Usa la app oficial dentro del parque — tiene tiempos en vivo y mapa. Esta app te ayuda a planificar antes de entrar, la oficial te orienta dentro.</span></div>
+    <div class="tip-row"><span class="tip-num">9</span><span>La fila single de Shambhala y Red Force raramente vale la pena — sus asientos son de 2 en fila y casi siempre van parejas. En Dragon Khan, Furius Baco y Hurakan Condor sí funciona bien.</span></div>
+    <div class="tip-row"><span class="tip-num">10</span><span>Abril y mayo pueden sorprenderte — aunque la afluencia estimada sea baja, suelen ir muchos grupos escolares entre semana. Las colas pueden ser más largas de lo esperado en atracciones familiares.</span></div>
+    <div class="tip-row"><span class="tip-num">11</span><span>Los hoteles del resort tienen ventajas — parking gratuito incluido. Con 1 noche tienes acceso a PortAventura Park los días de llegada y salida, más 1 acceso a Ferrari Land. Hotel PortAventura, Colorado Creek, Gold River y Mansión de Lucy tienen acceso directo al parque. Hotel El Paso y Caribe están a pocos minutos a pie.</span></div>
+    <div class="tip-row"><span class="tip-num">12</span><span>En temporada baja no todo está abierto — algunas atracciones y shows no funcionan, y las que sí abren pueden tardar entre 30 min y hora y media en arrancar desde la apertura del parque.</span></div>
+  </div>
 </div>
 
 <!-- BOTÓN APP OFICIAL -->
@@ -430,13 +462,20 @@
     {id:'kontiki',name:'Kontiki',zone:'Polynesia',top:false,single:null,desc:'Barco vikingo que oscila en arco.'},
     {id:'penitence',name:'Penitence Station',zone:'Far West',top:false,single:null,desc:'Montaña rusa familiar ambientada en el salvaje oeste.'},
     {id:'serpiente',name:'La Serpiente Emplumada',zone:'México',top:false,single:null,desc:'Montaña rusa familiar temática mexicana.'},
-    {id:'sesamo_bus',name:'Sesame Street Party Bus',zone:'SésamoAventura',top:false,single:null,desc:'Para niños pequeños con personajes de Barrio Sésamo.'},
     {id:'silver',name:'Silver River Flume',zone:'Far West',top:false,single:null,desc:'Atracción de agua en troncos. Moderadamente mojado.'},
     {id:'tea_cups',name:'Tea Cups',zone:'China',top:false,single:null,desc:'Tazas giratorias clásicas. Para toda la familia.'},
     {id:'tomahawk',name:'Tomahawk',zone:'Far West',top:false,single:null,desc:'Barco vikingo temático del oeste. Oscilación intensa.'},
     {id:'volpaiute',name:'Volpaiute',zone:'Far West',top:false,single:null,desc:'Atracción giratoria familiar.'},
     {id:'wild_buffalos',name:'Wild Buffalos',zone:'Far West',top:false,single:null,desc:'Montaña rusa infantil. Para los más pequeños.'},
     {id:'yucatan',name:'Yucatan',zone:'México',top:false,single:null,desc:'Descenso de agua con caída final. Mojado garantizado.'},
+    // Infantiles SésamoAventura
+    {id:'tami_tami',name:'Tami Tami',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Montaña rusa suave para los más pequeños. Primera montaña rusa de muchos niños.'},
+    {id:'coco_piloto',name:'Coco Piloto',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Monorrail temático que recorre toda la zona de SésamoAventura.'},
+    {id:'magic_fish',name:'Magic Fish',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Góndolas tematizadas en peces sobre el agua. Altura mínima 1,2m.'},
+    {id:'salto_blas',name:'El Salto de Blas',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Torres de caída libre controladas para niños. Altura mínima 1,1m.'},
+    {id:'granja_elmo',name:'La Granja de Elmo',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Trenes tematizados en tractores que recorren una granja. Altura mínima 1,2m.'},
+    {id:'sesamo_station',name:'SésamoAventura Station',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Estación del tren de vapor que recorre todo el parque. Sin altura mínima.'},
+    {id:'sesamo_bus',name:'Sesame Street Party Bus',zone:'SésamoAventura · Infantil',top:false,single:null,desc:'Para niños pequeños con personajes de Barrio Sésamo.'},
   ];
 
   const RIDES_FERRARI=[
