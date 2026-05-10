@@ -201,13 +201,15 @@
   <div id="affluence-reason" style="font-size:13px;color:var(--color-text-secondary);line-height:1.5;margin-top:10px;"></div>
 </div>
 
-<!-- TIEMPO AEMET -->
-<div id="weather-card" class="card-flat">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-    <div style="font-size:13px;color:var(--color-text-secondary);">Tiempo en Salou</div>
-    <div style="font-size:10px;color:var(--color-text-tertiary);">AEMET</div>
+<!-- TIEMPO: enlace directo a AEMET -->
+<div class="card-flat" style="margin-bottom:1rem;">
+  <div style="display:flex;align-items:center;justify-content:space-between;">
+    <div>
+      <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:4px;">Tiempo en Salou</div>
+      <div style="font-size:12px;color:var(--color-text-tertiary);">Predicción oficial de AEMET para Salou (Tarragona)</div>
+    </div>
+    <a href="https://www.aemet.es/es/eltiempo/prediccion/municipios/salou-id43137" target="_blank" style="display:inline-block;background:var(--color-accent);color:white;font-size:13px;padding:8px 14px;border-radius:var(--border-radius-md);text-decoration:none;flex-shrink:0;margin-left:12px;">Ver →</a>
   </div>
-  <div id="weather-content" style="font-size:13px;color:var(--color-text-tertiary);">Cargando previsión...</div>
 </div>
 
 <div class="card">
@@ -362,37 +364,37 @@
   // === LISTA FIJA DE ATRACCIONES ===
   // Siempre visible, con o sin datos en vivo
   const RIDES_PA = [
-    {id:'shambhala', name:'Shambhala', zone:'China', top:true, desc:'Hipercoaster de 76m de altura y 134 km/h. La montaña rusa más alta de Europa.'},
-    {id:'dragon_khan', name:'Dragon Khan', zone:'China', top:true, desc:'Montaña rusa invertida con 8 loopings. Icono del parque desde 1995.'},
-    {id:'furius', name:'Furius Baco', zone:'Mediterrània', top:true, desc:'Lanzadera de 0 a 135 km/h en 3,5 segundos. Sensación de aceleración extrema.'},
-    {id:'hurakan', name:'Hurakan Condor', zone:'México', top:true, desc:'Torre de caída libre de 100m. La más alta de Europa.'},
-    {id:'uncharted', name:'Uncharted', zone:'Far West', top:true, desc:'Montaña rusa oscura con giros impredecibles. Dificilísima de anticipar.'},
-    {id:'street_mission', name:'Street Mission', zone:'SésamoAventura', top:true, desc:'Experiencia de realidad virtual inmersiva. Combina movimiento y VR.'},
-    {id:'stampida', name:'Stampida', zone:'Far West', top:true, desc:'Doble montaña rusa de madera que compite en paralelo. Clásico del parque.'},
-    {id:'tutuki', name:'Tutuki Splash', zone:'Polynesia', top:true, desc:'Descenso en troncos con gran caída final. Prepárate para mojarte.'},
-    {id:'diablo', name:'El Diablo — Tren de la Mina', zone:'México', top:false, desc:'Montaña rusa suave estilo mina. Buena opción para toda la familia.'},
-    {id:'silver', name:'Silver River Flume', zone:'Far West', top:false, desc:'Atracción de agua en troncos por un río. Moderadamente mojado.'},
-    {id:'grand_canyon', name:'Grand Canyon Rapids', zone:'Far West', top:false, desc:'Rápidos en balsa circular. Inevitable acabar mojado.'},
-    {id:'angkor', name:'Angkor', zone:'China', top:false, desc:'Atracción de agua tipo río lento con caída. Puedes mojarte bastante.'},
-    {id:'serpiente', name:'La Serpiente Emplumada', zone:'México', top:false, desc:'Montaña rusa familiar temática mexicana. Buena para todas las edades.'},
-    {id:'yucatan', name:'Yucatan', zone:'México', top:false, desc:'Descenso de agua con caída final. Mojado garantizado.'},
-    {id:'kontiki', name:'Kontiki', zone:'Polynesia', top:false, desc:'Barco vikingo que oscila en arco. Clásico de parques temáticos.'},
-    {id:'tomahawk', name:'Tomahawk', zone:'Far West', top:false, desc:'Barco vikingo temático del oeste. Oscilación intensa.'},
-    {id:'volpaiute', name:'Volpaiute', zone:'Far West', top:false, desc:'Atracción giratoria familiar. Apta para niños y adultos.'},
-    {id:'wild_buffalos', name:'Wild Buffalos', zone:'Far West', top:false, desc:'Montaña rusa infantil temática. Para los más pequeños.'},
-    {id:'crazy_barrels', name:'Crazy Barrels', zone:'Far West', top:false, desc:'Atracción giratoria con barriles. Familiar y divertida.'},
-    {id:'cobra_imperial', name:'Cobra Imperial', zone:'China', top:false, desc:'Atracción de coches chocadores temática china.'},
-    {id:'tea_cups', name:'Tea Cups', zone:'China', top:false, desc:'Tazas giratorias clásicas. Para toda la familia.'},
-    {id:'sesamo_bus', name:'Sesame Street Party Bus', zone:'SésamoAventura', top:false, desc:'Atracción para niños pequeños con los personajes de Barrio Sésamo.'},
-    {id:'anubis', name:'Anubis', zone:'Polynesia', top:false, desc:'Péndulo invertido que oscila a gran velocidad.'},
-    {id:'penitence', name:'Penitence Station', zone:'Far West', top:false, desc:'Montaña rusa familiar ambientada en el salvaje oeste.'},
+    {id:'shambhala', name:'Shambhala', zone:'China', top:true, desc:'Hipercoaster de 76m de altura y 134 km/h. La montaña rusa más alta de Europa.', single:'⚠️ Fila single existe pero raramente más rápida — asientos de 2 en fila, difícil que sobre hueco.'},
+    {id:'dragon_khan', name:'Dragon Khan', zone:'China', top:true, desc:'Montaña rusa invertida con 8 loopings. Icono del parque desde 1995.', single:'✅ Fila single funciona bien — asientos de 4 por fila, suele haber huecos.'},
+    {id:'furius', name:'Furius Baco', zone:'Mediterrània', top:true, desc:'Lanzadera de 0 a 135 km/h en 3,5 segundos. Sensación de aceleración extrema.', single:'✅ Fila single disponible y suele ahorrar tiempo.'},
+    {id:'hurakan', name:'Hurakan Condor', zone:'México', top:true, desc:'Torre de caída libre de 100m. La más alta de Europa.', single:'✅ Fila single disponible — la primera del parque en tenerla.'},
+    {id:'uncharted', name:'Uncharted', zone:'Far West', top:true, desc:'Montaña rusa oscura con giros impredecibles. Dificilísima de anticipar.', single:null},
+    {id:'street_mission', name:'Street Mission', zone:'SésamoAventura', top:true, desc:'Experiencia de realidad virtual inmersiva. Combina movimiento y VR.', single:null},
+    {id:'stampida', name:'Stampida', zone:'Far West', top:true, desc:'Doble montaña rusa de madera que compite en paralelo. Clásico del parque.', single:null},
+    {id:'tutuki', name:'Tutuki Splash', zone:'Polynesia', top:true, desc:'Descenso en troncos con gran caída final. Prepárate para mojarte.', single:null},
+    {id:'diablo', name:'El Diablo — Tren de la Mina', zone:'México', top:false, desc:'Montaña rusa suave estilo mina. Buena opción para toda la familia.', single:null},
+    {id:'silver', name:'Silver River Flume', zone:'Far West', top:false, desc:'Atracción de agua en troncos por un río. Moderadamente mojado.', single:null},
+    {id:'grand_canyon', name:'Grand Canyon Rapids', zone:'Far West', top:false, desc:'Rápidos en balsa circular. Inevitable acabar mojado.', single:null},
+    {id:'angkor', name:'Angkor', zone:'China', top:false, desc:'Atracción de agua tipo río lento con caída. Puedes mojarte bastante.', single:null},
+    {id:'serpiente', name:'La Serpiente Emplumada', zone:'México', top:false, desc:'Montaña rusa familiar temática mexicana. Buena para todas las edades.', single:null},
+    {id:'yucatan', name:'Yucatan', zone:'México', top:false, desc:'Descenso de agua con caída final. Mojado garantizado.', single:null},
+    {id:'kontiki', name:'Kontiki', zone:'Polynesia', top:false, desc:'Barco vikingo que oscila en arco. Clásico de parques temáticos.', single:null},
+    {id:'tomahawk', name:'Tomahawk', zone:'Far West', top:false, desc:'Barco vikingo temático del oeste. Oscilación intensa.', single:null},
+    {id:'volpaiute', name:'Volpaiute', zone:'Far West', top:false, desc:'Atracción giratoria familiar. Apta para niños y adultos.', single:null},
+    {id:'wild_buffalos', name:'Wild Buffalos', zone:'Far West', top:false, desc:'Montaña rusa infantil temática. Para los más pequeños.', single:null},
+    {id:'crazy_barrels', name:'Crazy Barrels', zone:'Far West', top:false, desc:'Atracción giratoria con barriles. Familiar y divertida.', single:null},
+    {id:'cobra_imperial', name:'Cobra Imperial', zone:'China', top:false, desc:'Atracción de coches chocadores temática china.', single:null},
+    {id:'tea_cups', name:'Tea Cups', zone:'China', top:false, desc:'Tazas giratorias clásicas. Para toda la familia.', single:null},
+    {id:'sesamo_bus', name:'Sesame Street Party Bus', zone:'SésamoAventura', top:false, desc:'Atracción para niños pequeños con los personajes de Barrio Sésamo.', single:null},
+    {id:'anubis', name:'Anubis', zone:'Polynesia', top:false, desc:'Péndulo invertido que oscila a gran velocidad.', single:null},
+    {id:'penitence', name:'Penitence Station', zone:'Far West', top:false, desc:'Montaña rusa familiar ambientada en el salvaje oeste.', single:null},
   ];
 
   const RIDES_FERRARI = [
-    {id:'red_force', name:'Red Force', zone:'Ferrari Land', top:true, desc:'Lanzadera vertical a 180 km/h. La más rápida de Europa.'},
-    {id:'thrill_towers', name:'Thrill Towers', zone:'Ferrari Land', top:true, desc:'Torres de caída libre de 112m. Dos experiencias: caída suave y brusca.'},
-    {id:'maranello', name:'Maranello Grand Race', zone:'Ferrari Land', top:true, desc:'Circuito de kartings eléctricos con licencia Ferrari. Para todas las edades.'},
-    {id:'racing_legends', name:'Racing Legends', zone:'Ferrari Land', top:false, desc:'Simulador 4D de Fórmula 1. Experiencia de piloto sin límite de edad.'},
+    {id:'red_force', name:'Red Force', zone:'Ferrari Land', top:true, desc:'Lanzadera vertical a 180 km/h. La más rápida de Europa.', single:'⚠️ Fila single existe pero raramente más rápida — asientos de 2 en fila.'},
+    {id:'thrill_towers', name:'Thrill Towers', zone:'Ferrari Land', top:true, desc:'Torres de caída libre de 112m. Dos experiencias: caída suave y brusca.', single:'✅ Fila single disponible — nueva en 2026.'},
+    {id:'maranello', name:'Maranello Grand Race', zone:'Ferrari Land', top:true, desc:'Circuito de kartings eléctricos con licencia Ferrari. Para todas las edades.', single:null},
+    {id:'racing_legends', name:'Racing Legends', zone:'Ferrari Land', top:false, desc:'Simulador 4D de Fórmula 1. Experiencia de piloto sin límite de edad.', single:null},
   ];
 
   let liveData={}; // { rideId: {wait_time, is_open, trend} }
@@ -526,59 +528,10 @@
     const mmdd=date.toISOString().slice(5,10);
     if(isPaClosed(mmdd))return null;
     const season=getSeason(date);
-    if(between(mmdd,'02-14','05-15'))return'⚠️ En esta época algunas atracciones pueden estar cerradas por mantenimiento, especialmente las de agua (Tutuki Splash, Stampida). Confirma en la app oficial.';
+    if(between(mmdd,'02-14','05-15'))return'⚠️ En esta época algunas atracciones pueden estar cerradas por mantenimiento, especialmente las de agua (Tutuki Splash, Stampida). Confirma en la app oficial. En abril y mayo es habitual la presencia de grupos escolares en días de diario, lo que puede aumentar las colas.';
     if(season==='halloween')return'⚠️ En temporada de Halloween algunas atracciones de agua pueden estar cerradas.';
     if(season==='xmas')return'⚠️ En Navidad la oferta de atracciones es reducida. Confirma en la app oficial.';
     return null;
-  }
-
-  // === TIEMPO AEMET ===
-  const AEMET_ESTADOS={
-    11:'☀️ Despejado',12:'🌤 Poco nuboso',13:'⛅ Intervalos nubosos',14:'☁️ Nuboso',15:'☁️ Muy nuboso',16:'☁️ Cubierto',
-    17:'🌫 Nubes altas',23:'🌧 Intervalos nubosos con lluvia',24:'🌧 Nuboso con lluvia',25:'🌧 Muy nuboso con lluvia',
-    26:'🌧 Cubierto con lluvia',33:'⛈ Intervalos nubosos con tormenta',34:'⛈ Nuboso con tormenta',
-    43:'🌨 Intervalos nubosos con nieve',44:'🌨 Nuboso con nieve',51:'🌦 Lluvia débil',52:'🌧 Lluvia moderada',
-    53:'🌧 Lluvia fuerte',61:'⛈ Tormenta',71:'🌨 Nieve débil',72:'🌨 Nieve moderada',
-  };
-
-  async function fetchWeather(dateStr){
-    const content=document.getElementById('weather-content');
-    const diffDays=Math.round((new Date(dateStr+'T12:00:00')-new Date(todayIso+'T12:00:00'))/86400000);
-    if(diffDays<0||diffDays>6){content.innerHTML='<span style="font-size:13px;color:var(--color-text-tertiary);">Previsión disponible solo para los próximos 7 días.</span>';return;}
-    content.innerHTML='<span style="font-size:13px;color:var(--color-text-tertiary);">Cargando previsión...</span>';
-    try{
-      // AEMET: primero obtenemos la URL de datos
-      const r1=await fetch('https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/'+AEMET_STATION+'/?api_key='+AEMET_KEY);
-      const j1=await r1.json();
-      if(!j1.datos)throw new Error('Sin URL de datos');
-      const r2=await fetch(j1.datos);
-      const data=await r2.json();
-      const pred=data[0]?.prediccion?.dia;
-      if(!pred||!pred.length)throw new Error('Sin predicción');
-      const dia=pred.find(d=>d.fecha&&d.fecha.startsWith(dateStr));
-      if(!dia)throw new Error('Fecha no encontrada');
-
-      const tmax=dia.temperatura?.maxima??'—';
-      const tmin=dia.temperatura?.minima??'—';
-      const rain=dia.probPrecipitacion?.find(p=>p.periodo==='00-24')?.value??dia.probPrecipitacion?.[0]?.value??'—';
-      const stateCode=dia.estadoCielo?.find(p=>p.periodo==='00-24')?.value??dia.estadoCielo?.[0]?.value??'';
-      const stateDesc=AEMET_ESTADOS[parseInt(stateCode)]||'🌡 '+stateCode;
-      const emoji=stateDesc.split(' ')[0];
-      const desc=stateDesc.split(' ').slice(1).join(' ');
-
-      let html='<div style="display:flex;align-items:center;gap:14px;">';
-      html+='<div style="font-size:28px;">'+emoji+'</div>';
-      html+='<div><div style="font-size:15px;font-weight:500;color:var(--color-text-primary);">'+desc+'</div>';
-      html+='<div style="font-size:13px;color:var(--color-text-secondary);">'+tmax+'° / '+tmin+'° · Prob. lluvia: '+rain+'%</div></div></div>';
-
-      // Aviso si lluvia probable
-      if(parseInt(rain)>=50){html+='<div style="font-size:12px;color:var(--color-text-warning);margin-top:8px;line-height:1.4;">☔ Lluvia probable — lleva chubasquero. Las colas suelen bajar con lluvia.</div>';}
-      else if(parseInt(tmax)>=35){html+='<div style="font-size:12px;color:var(--color-text-warning);margin-top:8px;line-height:1.4;">🌡 Calor extremo — hidrátate bien y aprovecha las zonas de agua.</div>';}
-
-      content.innerHTML=html;
-    }catch(e){
-      content.innerHTML='<span style="font-size:13px;color:var(--color-text-tertiary);">No se ha podido cargar la previsión de AEMET.</span>';
-    }
   }
 
   // === RENDER ATRACCIONES (siempre visible) ===
@@ -612,7 +565,7 @@
       '<div class="ride-left">' +
         '<div class="ride-name'+(ride.top?' top':'')+'">'+(haslive?'<span class="live-badge">EN VIVO</span> ':'')+ride.name+'</div>'+
         '<div class="ride-zone">'+ride.zone+'</div>'+
-        '<div class="ride-desc">'+ride.desc+'</div>'+
+        '<div class="ride-desc">'+ride.desc+(ride.single?'<div style="margin-top:4px;font-size:12px;color:var(--color-text-secondary);">'+ride.single+'</div>':'')+'</div>'+
       '</div>'+
       '<div class="ride-right">'+pillHtml+'</div>'+
     '</div>';
@@ -903,7 +856,6 @@
     renderRideList();
     renderShows(date);
     renderRestaurants(date);
-    fetchWeather(dateInput.value);
 
     const{anyOpen}=recalcLive();
     if(anyOpen){fetchLive();startPolling();}else{stopPolling();}
