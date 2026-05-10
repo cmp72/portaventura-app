@@ -565,6 +565,8 @@
       toggleFav(id);
     });
   }
+  document.getElementById('tips-toggle').addEventListener('click',()=>document.getElementById('tips-card').classList.toggle('open'));
+
   document.getElementById('edit-modal-cancel').addEventListener('click',closeEditModal);
   document.getElementById('edit-modal-save').addEventListener('click',()=>{
     favs=editSelection.map(f=>({rideId:f.rideId}));
